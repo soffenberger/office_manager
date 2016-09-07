@@ -54,27 +54,29 @@ APPLICATION_NAME = 'Gmail API Python Quickstart'
 
 
 def start_up():
-	global calendar_name
-	global subject_key
 	if  os.path.exists(".office_profile.json"):
 		with open(".office_profile.json", "r") as file:
 			data = json.load(file)
 			calendar_name = data["calendar_name"]
 			subject_key = data["subject_key"]
+			user_name = data["user_name"]
 			
 	else:
 		with open(".office_profile.json", "w+") as file:
 			calendar_name = raw_input("What is the name of the calendar? ")
 			subject_key = raw_input("What subject will the messages have? ")
-			data = {"calendar_name": calendar_name, "subject_key": subject_key}
+			user_name = raw_input("What name should I call you? ")
+			data = {"calendar_name": calendar_name, "subject_key": subject_key, "user_name": user_name}
 			json.dump(data, file)
 	if os.path.exists("message_log.txt"):
 		pass
 	else:
 		with open("message_log.txt", 'w+'):
 			os.utime("message_log.txt", None)
-			
 
+	return (calendar_name, subject_key, user_name)
+			
+	
 
 def check_past_message(message):
 	time = message.split(" ^% ")[1].replace("\n","")
@@ -85,7 +87,6 @@ def check_past_message(message):
 	else:
 		cal = pdt.Calendar()
 		parse_time = cal.parseDT(mss, time)
-		print(parse_time)
 		if (parse_time[1] == 0 or datetime.now() < parse_time[0]):
 			user_message = mss
 		else:
@@ -130,10 +131,8 @@ def get_credentials():
 
 
 def get_google_information():
-    start_up()
+    (calendar_name, subject_key, user_name) = start_up()
     global service
-    global calendar_name
-    global subject_key
     global google_email
     """Shows basic usage of the Gmail API.
 
@@ -197,23 +196,38 @@ def get_google_information():
     for g in calendars['items']:
 	if g['summary'] == calendar_name:
 		calendar_id = g['id']
-    now = datetime.now()  
-    now = now.strftime("%Y-%m-%dT%H:%M:%S") + "Z"
-    print(now)
-    events = service2.events().list(calendarId = calendar_id, singleEvents = 1, orderBy = "startTime", maxResults = 1, timeMin=now).execute()
-    event_dict= { 
-    "event_summary": events['items'][0]['summary'],
-    "event_timezone": events['timeZone'],
-    "event_end": (events['items'][0]['end']['dateTime'].split("T")[0],events['items'][0]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
-    "event_start": (events['items'][0]['start']['dateTime'].split("T")[0],events['items'][0]['start']['dateTime'].split("T")[1].split("-")[0][0:5]) }
-    if not user_message: 
-    	text_to_print = event_dict["event_summary"]  + "\nStart Date: " + event_dict["event_start"][0] + "\nStart Time: " + event_dict["event_start"][1]  + "\nEnd Date: " + event_dict["event_end"][0] + "\nEnd Time: " + event_dict["event_end"][1]
-	color = "light green"
-    else:
-	text_to_print = user_message
-	color = "pink"
 
-    return (text_to_print, color)
+    now = datetime.now()
+    dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
+    dict_dates = []
+    for i in dates:
+    	start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
+	end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
+    	events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 1, timeMin=start_time, timeMax=end_time).execute()
+	#print(events)
+	try:
+		dict_dates.append(
+    		{ 
+    		"event_summary": events['items'][0]['summary'],
+    		"event_timezone": events['timeZone'],
+    		"event_end": (events['items'][0]['end']['dateTime'].split("T")[0],events['items'][0]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
+   		"event_start": (events['items'][0]['start']['dateTime'].split("T")[0],events['items'][0]['start']['dateTime'].split("T")[1].split("-")[0][0:5]) }
+		)
+	except IndexError:
+		dict_dates.append("")
+
+
+    text_to_print = []
+    if not user_message:
+	for i in range(5):
+		if len(dict_dates[i]) > 0:
+			text_to_print.append(dict_dates[i]["event_summary"]  + "\nDate: " + dict_dates[i]["event_start"][0] + "\nTime: " + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
+		else:
+			text_to_print.append("No Events in Calendar")
+    else:
+	text_to_print = [user_message, "", "", "", ""]
+
+    return (text_to_print, user_name)
 
 
 def qr_code():
@@ -224,7 +238,7 @@ def qr_code():
 		error_correction=qrcode.constants.ERROR_CORRECT_H,
 		box_size=5,
 	)
-	qr.add_data("mailto:{0}".format(google_email))
+	qr.add_data("mailto:{0}".format(email))
 	qr.make(fit=True)
 	img = qr.make_image()
 	img.save("qr_code.png")
@@ -236,7 +250,6 @@ def create_message(msg, name, email, waiting):
 	message = MIMEText(msg)
 	message['to'] = google_email
 	message['from'] = google_email
-	print(waiting)
 	if waiting:
 		message['subject'] = "Just wanted to let you know {0}({1}) is waiting".format(name, email)
 	else:
