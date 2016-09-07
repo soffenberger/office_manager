@@ -23,7 +23,7 @@ def refresh():
 
 class home(GridLayout):
 	def __init__(self, **kwargs):
-        	super(home, self).__init__(**kwargs)
+        	super(LoginScreen, self).__init__(**kwargs)
         	self.cols = 6
         	self.row = 2
         	self.sendmess = Button(text="Leave Message")
