@@ -1,0 +1,15 @@
+#:kivy `1.0`
+
+#: import FadTransition kivy.uix.screenmanager.FadeTransition
+
+
+home:
+	BoxLayout:
+		size: root.size
+		Button:
+			id: button1
+			text: "Leave Message"
+			on_release: root.send()
+		Label:
+			id: label1
+			text: message
