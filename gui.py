@@ -1,4 +1,4 @@
-from show_stuff import get_google_information, start_up, send_message, qr_code
+from show_stuff import get_google_information, start_up, send_message, qr_code, get_google_calendar
 from time import sleep
 import kivy
 kivy.require('1.8.0')
@@ -25,30 +25,35 @@ class About_Us(Screen):
     pass
 
 class Full_Image(Screen):
-    qr_code()
-    
-
-class Dashboard(Screen):
     def __init__(self, *args, **kwargs):
-	super(Dashboard, self).__init__(*args, **kwargs)
-	(self.text, self.uname) = get_google_information()
-
-    def update_value(self):
-		self.text = get_google_information()
-		if not self.text[1]:
-			self.manager.current = "Alert"
+	super(Full_Image, self).__init__(*args, **kwargs)
+	qr_code()
+	#sleep(30)
+   
+class Dashboard(Screen):
+    def __init__(self, **kwargs):
+	self.alert = get_google_information()[0]
+	super(Dashboard, self).__init__(**kwargs)
+	(self.text, self.uname) = get_google_calendar()
+    	
+    def update_value(self, *args):
+	self.alert = get_google_information()[0]	
+	if self.alert:
+		self.parent.current =  "Alert"
+	else:
+		(self.text, self.uname) = get_google_calendar()
     
 		
 
 class Alert(Screen):
     def __init__(self, *args, **kwargs):
 	super(Alert, self).__init__(*args, **kwargs)
-	(self.text, self.uname) = get_google_information()
+	(self.is_alert, self.text, self.uname) = get_google_information()
 
-    def update_value(self):
-		self.text = get_google_information()
-		if self.text[1]:
-			self.manager.current = "Dashboard"
+    def update_value(self, *args):
+        (self.is_alert, self.text, self.uname) = get_google_information()
+	if not self.is_alert:
+		self.parent.current = "Dashboard"
 
 
 

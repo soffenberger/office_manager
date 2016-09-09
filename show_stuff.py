@@ -125,6 +125,48 @@ def get_credentials():
     return credentials
 
 
+###### Switching the calendar info to its own function ######
+
+def get_google_calendar():
+    (calendar_name, subject_key, user_name) = start_up()
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service2 = discovery.build('calendar', 'v3', http=http)
+    calendars = service2.calendarList().list().execute()
+    with open(".gmail.txt", 'r') as file:
+        google_email = file.read()
+    name = google_email.split("<")[0] 
+    for g in calendars['items']:
+	if g['summary'] == calendar_name:
+		calendar_id = g['id']
+
+    now = datetime.now()
+    dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
+    dict_dates = []
+    for i in dates:
+    	start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
+	end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
+    	events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 1, timeMin=start_time, timeMax=end_time).execute()
+	#print(events)
+	try:
+		dict_dates.append(
+    		{ 
+    		"event_summary": events['items'][0]['summary'],
+    		"event_timezone": events['timeZone'],
+    		"event_end": (events['items'][0]['end']['dateTime'].split("T")[0],events['items'][0]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
+   		"event_start": (events['items'][0]['start']['dateTime'].split("T")[0],events['items'][0]['start']['dateTime'].split("T")[1].split("-")[0][0:5]) }
+		)
+	except IndexError:
+		dict_dates.append("")
+    text_to_print = []
+    for i in range(5):
+	if len(dict_dates[i]) > 0:
+	    text_to_print.append(dict_dates[i]["event_summary"]  + "\nDate: " + dict_dates[i]["event_start"][0] + "\nTime: " + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
+	else:
+	    text_to_print.append("No Events in Calendar")
+    return (text_to_print , name)
+
+   
 ####### Function that connects gmail and looks for messages #######3
 ####### Also this function looks at calendar and gets the ##########
 ###### Most recent calendar event ##################################
@@ -139,13 +181,12 @@ def get_google_information():
     Creates a Gmail API service object and outputs a list of label names
     of the user's Gmail account.
     """
+    
     user_message = ""
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http)
-    service2 = discovery.build('calendar', 'v3', http=http)
 
-    calendars = service2.calendarList().list().execute()  
     messages = service.users().messages().list(userId= 'me', maxResults = 5).execute()
     
     for i in messages['messages']:
@@ -184,51 +225,19 @@ def get_google_information():
 	except IndexError as e:
 		pass
 	
-	
 	if os.path.exists(".gmail.txt"):
 		pass
 	else:
 		with open(".gmail.txt", 'w+') as file:
-			file.write(google_email)
-				
-
-
-    for g in calendars['items']:
-	if g['summary'] == calendar_name:
-		calendar_id = g['id']
-
-    now = datetime.now()
-    dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
-    dict_dates = []
-    for i in dates:
-    	start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
-	end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
-    	events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 1, timeMin=start_time, timeMax=end_time).execute()
-	#print(events)
-	try:
-		dict_dates.append(
-    		{ 
-    		"event_summary": events['items'][0]['summary'],
-    		"event_timezone": events['timeZone'],
-    		"event_end": (events['items'][0]['end']['dateTime'].split("T")[0],events['items'][0]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
-   		"event_start": (events['items'][0]['start']['dateTime'].split("T")[0],events['items'][0]['start']['dateTime'].split("T")[1].split("-")[0][0:5]) }
-		)
-	except IndexError:
-		dict_dates.append("")
-
-
-    text_to_print = []
-    if not user_message:
-	for i in range(5):
-		if len(dict_dates[i]) > 0:
-			text_to_print.append(dict_dates[i]["event_summary"]  + "\nDate: " + dict_dates[i]["event_start"][0] + "\nTime: " + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
-		else:
-			text_to_print.append("No Events in Calendar")
-    else:
-	text_to_print = [user_message, "", "", "", ""]
-
-    return (text_to_print, user_name)
-
+			file.write(google_email) 
+   	with open(".gmail.txt", 'r') as file:
+        	google_email = file.read()
+    	name = google_email.split("<")[0] 
+	if user_message:
+		return(True, user_message, name)
+	else:
+		return(False, "", name)
+			
 
 def qr_code():
 	with open(".gmail.txt", 'r') as file:
