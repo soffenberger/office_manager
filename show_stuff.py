@@ -233,6 +233,7 @@ def get_google_information():
    	with open(".gmail.txt", 'r') as file:
         	google_email = file.read()
     	name = google_email.split("<")[0] 
+	print(user_message)
 	if user_message:
 		return(True, user_message, name)
 	else:

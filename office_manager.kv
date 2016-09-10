@@ -1,10 +1,6 @@
 #:kivy 1.8
 #: import ScreenManager kivy.uix.screenmanager.ScreenManager
 #: import Screen kivy.uix.screenmanager.ScreenManager
-#: import About_Us screen
-#: import Dashboard screen
-#: import Alert screen
-#: import SignIn screen
 #: import get_color_from_hex kivy.utils.get_color_from_hex
 #: import Clock kivy.clock.Clock
 #: import Image kivy.uix.image.Image
@@ -102,9 +98,8 @@ ScreenManager:
 
 
 <Dashboard>:
-	id: Dashboard
-	#on_pre_enter: (root.update_value)
-	on_enter:  (Clock.schedule_interval(root.update_value, 25/1))
+    id: Dashboard
+    #on_pre_enter: (root.update_value)
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -113,7 +108,7 @@ ScreenManager:
             orientation: 'horizontal'
             Label:
                 text: "MON\n" + root.text[0]
-                group: 'week_days'
+                group: 'Mon'
                 font_size: 30
                 color: get_color_from_hex("#FFFFFF")
                 text_size: self.size
@@ -198,7 +193,7 @@ ScreenManager:
                 font_size: 20
 
 <Alert>:
-    on_enter:  (Clock.schedule_interval(root.update_value, 30/1))
+    msg:msg
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -206,7 +201,8 @@ ScreenManager:
             #width: 200
             orientation: 'horizontal'
             Label:
-                text: root.text
+		id: msg
+                text: "test"
                 group: 'week_days'
                 font_size: 30
                 color: get_color_from_hex("#FFFFFF")
@@ -225,7 +221,7 @@ ScreenManager:
                 group: 'send_message'
                 font_size: 20
                 on_press:
-					app.root.current = "Full_Image"
+                    app.root.current = "Full_Image"
             Label:
                 size_hint_x: .5
                 text: root.uname

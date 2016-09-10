@@ -12,6 +12,7 @@ from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.lang import Builder
 from kivy.uix.image import Image
+from kivy.properties import ObjectProperty
 import sys
 
 
@@ -35,10 +36,15 @@ class Dashboard(Screen):
 	self.alert = get_google_information()[0]
 	super(Dashboard, self).__init__(**kwargs)
 	(self.text, self.uname) = get_google_calendar()
-    	
+
+    def on_enter(self):
+	self.event = Clock.schedule_interval(self.update_value, 20/1)
+       	
     def update_value(self, *args):
+	print(self.ids)
 	self.alert = get_google_information()[0]	
 	if self.alert:
+		Clock.unschedule(self.event)
 		self.parent.current =  "Alert"
 	else:
 		(self.text, self.uname) = get_google_calendar()
@@ -46,13 +52,20 @@ class Dashboard(Screen):
 		
 
 class Alert(Screen):
+    msg = ObjectProperty(None)
     def __init__(self, *args, **kwargs):
 	super(Alert, self).__init__(*args, **kwargs)
-	(self.is_alert, self.text, self.uname) = get_google_information()
-
+	(self.is_alert, self.msg, self.uname) = get_google_information()
+	 
+    def on_enter(self):
+	(self.is_alert, self.msg, self.uname) = get_google_information()
+	print(self.text)
+	self.event = Clock.schedule_interval(self.update_value, 20/1)
+    
     def update_value(self, *args):
-        (self.is_alert, self.text, self.uname) = get_google_information()
+        (self.is_alert, self.msg, self.uname) = get_google_information()
 	if not self.is_alert:
+		Clock.unschedule(self.event)
 		self.parent.current = "Dashboard"
 
 
