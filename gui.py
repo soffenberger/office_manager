@@ -1,4 +1,4 @@
-from show_stuff import get_google_information, start_up, send_message, qr_code, get_google_calendar
+from show_stuff import get_google_information, start_up, send_message, qr_code, get_google_calendar, store_phone_number, get_phone_number
 from time import sleep
 import kivy
 kivy.require('1.8.0')
@@ -20,7 +20,27 @@ class MenuScreen(Screen):
     pass
 
 class SignIn(Screen):
-    pass
+    def __init__(self, *args, **kwargs):
+        self.number = "Nothing yet"
+        self.trigger = Clock.create_trigger(self.update_value, 10) 
+        super(SignIn, self).__init__(*args, **kwargs)
+
+    def on_enter(self):
+        self.trigger()
+
+    def update_value(self, *args):
+        self.number = get_phone_number()
+        if self.number == "Nothing Yet":
+            self.trigger()
+        self.ids['msg'].text = self.number
+
+    def leave(self, *args):
+        store_phone_number(self.number)
+        self.parent.current =  "Menu"
+    
+    def refresh(self, *args):
+        self.trigger()
+
 
 class About_Us(Screen):
     pass
@@ -31,7 +51,11 @@ class Full_Image(Screen):
         qr_code()
     #sleep(30)
    
-class Dashboard(Screen):
+
+
+
+
+class Dashboard(Screen): 
     def __init__(self, **kwargs):
         self.alert = get_google_information()[0]
         (self.text, self.uname) = get_google_calendar()

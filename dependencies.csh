@@ -1,10 +1,12 @@
 apt-get update
-apt-get install python3-pip
-pip3 install google-api-python-client
-pip3 install parsedatetime
-pip3 install qrcode
-pip3 install httplib2
-pip3 install cython
-apt-get install python3-pygame
+easy_install3 pip
+pip install google-api-python-client
+pip install parsedatetime
+pip install qrcode
+pip install httplib2
+pip install cython
+pip install pygame
+pip install pillow
 apt-get install python3-kivy
-pip3 install hangups
+pip install --upgrade kivy
+apt-get install libsdl-ttf2.0-dev

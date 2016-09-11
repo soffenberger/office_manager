@@ -1,2 +1,3 @@
 import show_stuff as ss
-ss.get_google_hangouts()
+#ss.get_sign_in_user()
+ss.refresh()

@@ -48,13 +48,15 @@ ScreenManager:
             font_size: 30
             on_release: app.root.current = 'Dashboard'
         Button:
-            text: 'Sign In'
+            text: 'Set Up'
             font_size: 30
             on_release: app.root.current = 'SignIn'
         Button:
             text: 'About Us'
             font_size: 30
             on_release: app.root.current = 'About_Us'
+
+
 
 <Full_Image>:
     BoxLayout:
@@ -99,7 +101,6 @@ ScreenManager:
 
 <Dashboard>:
     id: Dashboard
-    #on_pre_enter: (root.update_value)
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -112,7 +113,7 @@ ScreenManager:
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -124,7 +125,7 @@ ScreenManager:
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -136,7 +137,7 @@ ScreenManager:
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -148,7 +149,7 @@ ScreenManager:
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -158,11 +159,11 @@ ScreenManager:
                 orientation:'horizontal'
                 Label:
                     id: tues
-                    text: "Tues"
+                    text: "TUES"
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -174,7 +175,7 @@ ScreenManager:
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -186,7 +187,7 @@ ScreenManager:
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -198,7 +199,7 @@ ScreenManager:
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -212,7 +213,7 @@ ScreenManager:
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -224,7 +225,7 @@ ScreenManager:
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -236,7 +237,7 @@ ScreenManager:
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -248,7 +249,7 @@ ScreenManager:
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -262,7 +263,7 @@ ScreenManager:
                     group: 'thurs'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -274,7 +275,7 @@ ScreenManager:
                     group: 'thurs'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -286,7 +287,7 @@ ScreenManager:
                     group: 'thurs2'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -298,7 +299,7 @@ ScreenManager:
                     group: 'thurs3'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -312,7 +313,7 @@ ScreenManager:
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -324,7 +325,7 @@ ScreenManager:
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -336,7 +337,7 @@ ScreenManager:
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -348,7 +349,7 @@ ScreenManager:
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
+                    canvas:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -379,8 +380,6 @@ ScreenManager:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
-            #size_hint_x: .8
-            #width: 200
             orientation: 'horizontal'
             Label:
                 id: almsg
@@ -388,7 +387,7 @@ ScreenManager:
                 group: 'week_days'
                 font_size: 30
                 color: get_color_from_hex("#FFFFFF")
-                canvas.before:
+                canvas:
                     Color:
                         rgba: get_color_from_hex("#FF5c33")
                     Rectangle:
@@ -422,54 +421,32 @@ ScreenManager:
         BoxLayout:
             orientation: 'vertical'
             Label:
-                text: 'Game Length in Days'
-                font_size: 30
-            BoxLayout:
-                orientation: 'horizontal'
-                ToggleButton:
-                    text: '100'
-                    state: 'down'
-                    group: 'newgame_days'
-                    font_size: 30
-                ToggleButton:
-                    text: '200'
-                    group: 'newgame_days'
-                    font_size: 30
-            BoxLayout:
-                orientation: 'horizontal'
-                ToggleButton:
-                    text: '365'
-                    group: 'newgame_days'
-                    font_size: 30
-                ToggleButton:
-                    text: '3650'
-                    group: 'newgame_days'
-                    font_size: 30
-            ToggleButton:
-                text: 'Unlimited'
-                group: 'newgame_days'
+                text: 'Send a Text to your gmail'
                 font_size: 30
         BoxLayout:
             orientation: 'vertical'
-            size_hint: (1, .5)
             Label:
-                text: 'Difficulty (Score Multiplier)'
+                text: 'Is This the Number'
                 font_size: 30
-            BoxLayout:
-                orientation: 'horizontal'
-                ToggleButton:
-                    text: 'Easy (x1)'
-                    state: 'down'
-                    group: 'newgame_difficulty'
-                    font_size: 30
-                ToggleButton:
-                    text: 'Medium (x2.5)'
-                    group: 'newgame_difficulty'
-                    font_size: 30
-                ToggleButton:
-                    text: 'Hard (x5)'
-                    group: 'newgame_difficulty'
-                    font_size: 30
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: msg
+                text: root.number
+                font_size: 30 
+            Button:
+                id: "Yes"
+                text: 'Yes'
+                on_press:
+                    root.leave()
+                
+            Button:
+                id: "No"
+                text: "No"
+                on_press:
+                    root.refresh()
+            
+
 <About_Us>:
     BoxLayout:
         orientation: 'vertical'

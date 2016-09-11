@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 import httplib2
+import requests 
 import qrcode
 import os
 import json
@@ -19,6 +20,7 @@ import mimetypes
 from apiclient import errors
 from apiclient import discovery
 import oauth2client
+from oauth2client.client import AccessTokenCredentials
 from oauth2client import client
 from oauth2client import tools
 from datetime import datetime, timedelta
@@ -45,28 +47,26 @@ except ImportError:
 # at ~/.credentials/gmail-python-quickstart.json
 # Can add more API's in the future when it gets there
 #'https://mail.google.com/' + 
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com/' + ' https://www.googleapis.com/auth/hangouts.readonly'
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com/' 
 CLIENT_SECRET_FILE = 'client.json'
-APPLICATION_NAME = 'Gmail API Python Quickstart'
+APPLICATION_NAME = 'Office Manager'
 
 ########### Enables the use of google API's as Spencer for questions #############
 
 
 
-def start_up():
+def start_up(): 
     if  os.path.exists(".office_profile.json"):
         with open(".office_profile.json", "r") as file:
             data = json.load(file)
             calendar_name = data["calendar_name"]
             subject_key = data["subject_key"]
-            user_name = data["user_name"]
             
     else:
         with open(".office_profile.json", "w+") as file:
-            calendar_name = raw_input("What is the name of the calendar? ")
-            subject_key = raw_input("What subject will the messages have? ")
-            user_name = raw_input("What name should I call you? ")
-            data = {"calendar_name": calendar_name, "subject_key": subject_key, "user_name": user_name}
+            calendar_name = "Official"
+            subject_key = "Note"
+            data = {"calendar_name": calendar_name, "subject_key": subject_key}
             json.dump(data, file)
     if os.path.exists("message_log.txt"):
         pass
@@ -74,7 +74,7 @@ def start_up():
         with open("message_log.txt", 'w+'):
             os.utime("message_log.txt", None)
 
-    return (calendar_name, subject_key, user_name)
+    return (calendar_name, subject_key)
             
     
 
@@ -95,6 +95,50 @@ def check_past_message(message):
         
     return user_message
                 
+"""
+def get_credentials():
+    if  os.path.exists("refresh.json"):
+        with open("refresh.json") as file:
+            refresh = json.load(file)
+    else:
+        ss.refresh()
+    credentials = AccessTokenCredentials(refresh['access_token'],'my-user-agent/1.0')
+    return credentials
+
+
+def refresh(device_code):
+    with open("client.json") as file:
+        data = json.load(file)
+    if  os.path.exists("refresh.json"):
+        with open("refresh.json") as file:
+            refresh = json.load(file)
+            payload = {
+            'client_id' : data['installed']['client_id'],
+            'client_scret': data['installed']['client_secret'] + "&",
+            'refresh_token': refresh['refresh_token'],
+            'grant_type': 'http://oauth.net/grant_type/device/1.0' 
+            }
+            headers = {"Content-type": "application/x-www-form-urlencoded",
+            "Host": "www.googleapis.com"
+            }
+            conn = requests.post("https://www.googleapis.com/oauth2/v4/token", data=payload, headers=headers)
+
+        with open("refresh.json", "w+") as file:
+            json.dump(conn.json(), file)
+        refresh = conn.json()
+    else:
+        payload = {
+        'client_id' : data['installed']['client_id'],
+        'client_scret': data['installed']['client_secret'] + "&",
+        'code': device_code,
+        'grant_type': refresh_token 
+        }
+        headers = {"Content-type": "application/x-www-form-urlencoded",
+           "Host": "www.googleapis.com"
+        }
+        conn = requests.post("https://accounts.google.com/o/oauth2/device/code", data=payload, headers=headers)
+"""    
+
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -104,7 +148,9 @@ def get_credentials():
 
     Returns:
         Credentials, the obtained credential.
+  
     """
+
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -119,24 +165,46 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
-            credentials = tools.run(flow, store)
+            
+        #else: # Needed only for compatibility with Python 2.6
+        #    credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
+    """
+    with open("client.json") as file:
+        data = json.load(file)
+    payload = {
+    'client_id' : data['installed']['client_id'],
+    'scope' : SCOPES,
+    }
+    headers = {"Content-type": "application/x-www-form-urlencoded",
+           "Host": "accounts.google.com"
+    }
+    conn = requests.post("https://accounts.google.com/o/oauth2/device/code", data=payload, headers=headers)
+    """
+    qr = qrcode.QRCode(
+    version=2,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=5,
+    )
+    qr.add_data("{0}".format(conn.json()['verification_url']))
+    qr.make(fit=True)
+    img = qr.make_image()
+    img.save("verification_page.png")
+    """
+    print(conn.json()['user_code']) 
+    return (conn.json()['user_code'], conn.json()['device_code'])
+    """
 
 ###### Google hangouts information ####################
-def get_google_hangouts():
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service3 = discovery.build('plusDomains', 'v1', http=http)
-    print(dir(service3))
+
 
 
 
 ###### Switching the calendar info to its own function ######
 
 def get_google_calendar():
-    (calendar_name, subject_key, user_name) = start_up()
+    (calendar_name, subject_key) = start_up()
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service2 = discovery.build('calendar', 'v3', http=http)
@@ -181,8 +249,8 @@ def get_google_calendar():
 
 
 def get_google_information():
-    (calendar_name, subject_key, user_name) = start_up()
-    #global service
+    (calendar_name, subject_key) = start_up()
+    #phone_number = get_num()
     global google_email
     """Shows basic usage of the Gmail API.
 
@@ -226,8 +294,8 @@ def get_google_information():
                                     user_message = ""
                     else:
                         with open("message_log.txt" , "r") as file:
-                                prev_mess = file.readlines()[-1].decode()
-                                user_message= check_past_message(prev_mess)
+                            prev_mess = file.readline()
+                            user_message= check_past_message(prev_mess)
                     
     
         except IndexError as e:
@@ -247,41 +315,54 @@ def get_google_information():
             return(False, "", name)
             
 
+def get_phone_number():
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('gmail', 'v1', http=http)
+
+    messages = service.users().messages().list(userId= 'me', maxResults = 5).execute()
+    
+    for i in messages['messages']:
+        for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']: 
+            if g["name"] == "from" or g["name"] == "From" :   
+                if g["value"][0].isdigit():
+                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    return g["value"]
+                else:
+                    return "Nothing yet"
+
+def get_num():
+    try:
+        with open(".phone_number", "r") as file:
+            num_sig = file.readline()
+        return num_sig
+    except FileNotFoundError:
+        return "Not there"
+
+ 
+def store_phone_number(signature):
+    with open(".phone_number.txt", "w+") as file:
+        file.write(signature)
+
+    
 def qr_code():
     with open(".gmail.txt", 'r') as file:
         email = file.readline() 
-        qr = qrcode.QRCode(
-        version=2,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=5,
-        )
+    qr = qrcode.QRCode(
+    version=2,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=5,
+    )
     qr.add_data("mailto:{0}".format(email))
     qr.make(fit=True)
     img = qr.make_image()
     img.save("qr_code.png")
     return img
 
-"""
-def create_message(msg, name, email, waiting):
-    global service, google_email
-    message = MIMEText(msg)
-    message['to'] = google_email
-    message['from'] = google_email
-    if waiting:
-        message['subject'] = "Just wanted to let you know {0}({1}) is waiting".format(name, email)
-    else:
-        message['subject'] = "Just wanted to let you know {0}({1}) dropped by".format(name, email)
 
-    return {'raw': base64.urlsafe_b64encode(message.as_string())}
-"""
 
-def send_message():#msg, name, email, waiting):
-    qr_code()
-    """
-    message = create_message(msg, name, email, waiting)
-    message = service.users().messages().send(userId = 'me', body=message).execute()
-    return message
-    """
+def send_message():
+    qr_code() 
 
 
          
