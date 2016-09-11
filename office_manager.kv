@@ -376,7 +376,6 @@ ScreenManager:
                 font_size: 20
 
 <Alert>:
-    msg:msg
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -384,8 +383,8 @@ ScreenManager:
             #width: 200
             orientation: 'horizontal'
             Label:
-                id: msg
-                text: "test"
+                id: almsg
+                text: root.msg
                 group: 'week_days'
                 font_size: 30
                 color: get_color_from_hex("#FFFFFF")

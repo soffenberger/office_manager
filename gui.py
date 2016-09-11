@@ -27,49 +27,49 @@ class About_Us(Screen):
 
 class Full_Image(Screen):
     def __init__(self, *args, **kwargs):
-	super(Full_Image, self).__init__(*args, **kwargs)
-	qr_code()
-	#sleep(30)
+        super(Full_Image, self).__init__(*args, **kwargs)
+        qr_code()
+    #sleep(30)
    
 class Dashboard(Screen):
     def __init__(self, **kwargs):
-	self.alert = get_google_information()[0]
-	(self.text, self.uname) = get_google_calendar()
-	self.trigger = Clock.create_trigger(self.update_value, 30)
-	super(Dashboard, self).__init__(**kwargs)
+        self.alert = get_google_information()[0]
+        (self.text, self.uname) = get_google_calendar()
+        self.trigger = Clock.create_trigger(self.update_value, 30)
+        super(Dashboard, self).__init__(**kwargs)
 
     def on_enter(self):
-      	self.trigger()
- 		
+        self.trigger()
+        
     def update_value(self, *args):
-	self.alert = get_google_information()[0]	
-	if self.alert:
-		self.parent.current =  "Alert"
-	else:
-		self.trigger()
-		(self.text, self.uname) = get_google_calendar()
+        self.alert = get_google_information()[0]    
+        if self.alert:
+            self.parent.current =  "Alert"
+        else:
+            self.trigger()
+            (self.text, self.uname) = get_google_calendar()
     
-		
+        
 
 class Alert(Screen):
-    msg = ObjectProperty(None)
     def __init__(self, *args, **kwargs):
-	(self.is_alert, self.msg, self.uname) = get_google_information()
-	self.trigger = Clock.create_trigger(self.update_value, 30)
-	super(Alert, self).__init__(*args, **kwargs)
-    	 
+        (self.is_alert, self.msg, self.uname) = get_google_information()
+        self.trigger = Clock.create_trigger(self.update_value, 30)
+        super(Alert, self).__init__(*args, **kwargs)
+         
     def on_enter(self):
-	(self.is_alert, self.msg, self.uname) = get_google_information()
-   	self.trigger()
+        (self.is_alert, self.msg, self.uname) = get_google_information()
+        self.ids['almsg'].text = self.msg
+        self.trigger()
  
     def update_value(self, *args):
         (self.is_alert, self.msg, self.uname) = get_google_information()
-	self.ids['msg'].text = self.msg
-	if not self.is_alert:
-		#self.event.cancel() 
-		self.parent.current = "Dashboard"
-	else:
-		self.trigger()
+        self.ids['almsg'].text = self.msg
+        if not self.is_alert:
+            #self.event.cancel() 
+            self.parent.current = "Dashboard"
+        else:
+            self.trigger()
 
 
 
@@ -77,27 +77,27 @@ buildKV = Builder.load_file("office_manager.kv")
 
 """
 class change_text(Widget):
-	def __init__(self, **kwargs):
-        	super(YourWidget, self).__init__(**kwargs)
-		self.text = get_google_information()
+    def __init__(self, **kwargs):
+            super(YourWidget, self).__init__(**kwargs)
+        self.text = get_google_information()
 
-	def update_text():
-		self.text = get_google_information()
+    def update_text():
+        self.text = get_google_information()
 """
 
 class office_manager(App):
-	icon = "icon1.png"
-	title = "Office Manager"
-	def build(self):
-		#Clock.schedule_interval(Dashboard().update_value(), 20/1.)
-		return buildKV
+    icon = "icon1.png"
+    title = "Office Manager"
+    def build(self):
+        #Clock.schedule_interval(Dashboard().update_value(), 20/1.)
+        return buildKV
 
 
 
-	
+    
 
-	
+    
 
 if __name__ == '__main__':
-	office_manager().run() 
+    office_manager().run() 
 

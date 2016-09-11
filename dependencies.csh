@@ -1,8 +1,10 @@
-sudo apt-get update
-sudo apt-get install python-pip
-pip install parsedatetime
-pip install qrcode
-pip install httplib2
-pip install cython
-sudo apt-get install pygame
-sudo apt-get install kivy
+apt-get update
+apt-get install python3-pip
+pip3 install google-api-python-client
+pip3 install parsedatetime
+pip3 install qrcode
+pip3 install httplib2
+pip3 install cython
+apt-get install python3-pygame
+apt-get install python3-kivy
+pip3 install hangups
