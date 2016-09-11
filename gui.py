@@ -34,19 +34,19 @@ class Full_Image(Screen):
 class Dashboard(Screen):
     def __init__(self, **kwargs):
 	self.alert = get_google_information()[0]
-	super(Dashboard, self).__init__(**kwargs)
 	(self.text, self.uname) = get_google_calendar()
+	self.trigger = Clock.create_trigger(self.update_value, 30)
+	super(Dashboard, self).__init__(**kwargs)
 
     def on_enter(self):
-	self.event = Clock.schedule_interval(self.update_value, 20/1)
-       	
+      	self.trigger()
+ 		
     def update_value(self, *args):
-	print(self.ids)
 	self.alert = get_google_information()[0]	
 	if self.alert:
-		Clock.unschedule(self.event)
 		self.parent.current =  "Alert"
 	else:
+		self.trigger()
 		(self.text, self.uname) = get_google_calendar()
     
 		
@@ -54,19 +54,22 @@ class Dashboard(Screen):
 class Alert(Screen):
     msg = ObjectProperty(None)
     def __init__(self, *args, **kwargs):
-	super(Alert, self).__init__(*args, **kwargs)
 	(self.is_alert, self.msg, self.uname) = get_google_information()
-	 
+	self.trigger = Clock.create_trigger(self.update_value, 30)
+	super(Alert, self).__init__(*args, **kwargs)
+    	 
     def on_enter(self):
 	(self.is_alert, self.msg, self.uname) = get_google_information()
-	print(self.text)
-	self.event = Clock.schedule_interval(self.update_value, 20/1)
-    
+   	self.trigger()
+ 
     def update_value(self, *args):
         (self.is_alert, self.msg, self.uname) = get_google_information()
+	self.ids['msg'].text = self.msg
 	if not self.is_alert:
-		Clock.unschedule(self.event)
+		#self.event.cancel() 
 		self.parent.current = "Dashboard"
+	else:
+		self.trigger()
 
 
 

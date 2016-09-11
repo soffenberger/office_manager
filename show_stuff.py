@@ -161,9 +161,9 @@ def get_google_calendar():
     text_to_print = []
     for i in range(5):
 	if len(dict_dates[i]) > 0:
-	    text_to_print.append(dict_dates[i]["event_summary"]  + "\nDate: " + dict_dates[i]["event_start"][0] + "\nTime: " + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
+	    text_to_print.append(dict_dates[i]["event_summary"]  + "\n" + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
 	else:
-	    text_to_print.append("No Events in Calendar")
+	    text_to_print.append("No Events")
     return (text_to_print , name)
 
    
