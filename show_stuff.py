@@ -250,7 +250,7 @@ def get_google_calendar():
 
 def get_google_information():
     (calendar_name, subject_key) = start_up()
-    #phone_number = get_num()
+    phone_number = get_num()
     global google_email
     """Shows basic usage of the Gmail API.
 
@@ -275,7 +275,7 @@ def get_google_information():
             elif g["name"] == "Subject":
                     subject = g["value"]
         try:
-            if senders_email.split("<")[1].split(">")[0]:
+            if google_email in senders_email.split("<")[1].split(">")[0]:
                     if (str(subject_key) in str(subject) or "reset" in subject.lower()): 
                         if (str(subject).lower() != "reset"):
                                 user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
@@ -292,11 +292,28 @@ def get_google_information():
                                 with open("message_log.txt" , "a") as file:
                                     file.write("reset" + " ^% " + str(now) + "\n")
                                     user_message = ""
-                    else:
-                        with open("message_log.txt" , "r") as file:
-                            prev_mess = file.readline()
-                            user_message= check_past_message(prev_mess)
+            elif phone_number in senders_email.split("<")[1].split(">")[0]:
+                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']!= "reset"):
+                    user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
+                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    now = datetime.now()
+                
+                    with open("message_log.txt" , "a") as file:
+                        file.write(user_message + " ^% " + str(now) + "\n")
+
+                else:
+                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    now = datetime.now()
                     
+                    with open("message_log.txt" , "a") as file:
+                        file.write("reset" + " ^% " + str(now) + "\n")
+                    user_message = ""
+
+            else:
+                with open("message_log.txt" , "r") as file:
+                    prev_mess = file.readline()
+                    user_message= check_past_message(prev_mess)
+                 
     
         except IndexError as e:
             pass
