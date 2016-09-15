@@ -58,11 +58,14 @@ class Full_Image(Screen):
 class Dashboard(Screen): 
     def __init__(self, **kwargs):
         self.alert = get_google_information()[0]
+        self.days=["mon","tues","wed","thurs","fri"]
         (self.text, self.uname) = get_google_calendar()
+        self.trigger1 = Clock.create_trigger(self.update_value, .5)
         self.trigger = Clock.create_trigger(self.update_value, 30)
         super(Dashboard, self).__init__(**kwargs)
 
     def on_enter(self):
+        self.trigger1()
         self.trigger()
         
     def update_value(self, *args):
@@ -72,8 +75,22 @@ class Dashboard(Screen):
         else:
             self.trigger()
             (self.text, self.uname) = get_google_calendar()
-    
-        
+            for i in range(5):
+                try:
+                    if len(self.text[i]) == 1:
+                        self.ids['{0}1'.format(self.days[i])].text = self.text[i][0]
+                        self.ids['{0}_lay'.format(self.days[i])].remove_widget(self.ids['{0}2'.format(self.days[i])])
+                        self.ids['{0}_lay'.format(self.days[i])].remove_widget(self.ids['{0}3'.format(self.days[i])])  
+                    elif len(self.text[i]) == 2:
+                        self.ids['{0}1'.format(self.days[i])].text = self.text[i][0]
+                        self.ids['{0}2'.format(self.days[i])].text = self.text[i][1]
+                        self.ids['{0}_lay'.format(self.days[i])].remove_widget(self.ids['{0}3'.format(self.days[i])]) 
+                    elif len(self.text[i]) == 3:
+                        self.ids['{0}1'.format(self.days[i])].text = self.text[i][0]
+                        self.ids['{0}2'.format(self.days[i])].text = self.text[i][1]
+                        self.ids['{0}3'.format(self.days[i])].text = self.text[i][2]
+                except ReferenceError:
+                    pass
 
 class Alert(Screen):
     def __init__(self, *args, **kwargs):

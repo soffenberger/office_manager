@@ -59,8 +59,8 @@ def start_up():
     if  os.path.exists(".office_profile.json"):
         with open(".office_profile.json", "r") as file:
             data = json.load(file)
-            calendar_name = data["calendar_name"]
-            subject_key = data["subject_key"]
+            calendar_name = "Official" #data["calendar_name"]
+            subject_key = "Note" #data["subject_key"]
             
     else:
         with open(".office_profile.json", "w+") as file:
@@ -222,24 +222,31 @@ def get_google_calendar():
     for i in dates:
         start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
         end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
-        events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 1, timeMin=start_time, timeMax=end_time).execute()
-    #print(events)
-        try:
-            dict_dates.append(
-            { 
-            "event_summary": events['items'][0]['summary'],
-            "event_timezone": events['timeZone'],
-            "event_end": (events['items'][0]['end']['dateTime'].split("T")[0],events['items'][0]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
-        "event_start": (events['items'][0]['start']['dateTime'].split("T")[0],events['items'][0]['start']['dateTime'].split("T")[1].split("-")[0][0:5]) }
-            )
-        except IndexError:
+        #print(events, start_time) 
+        events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 3, timeMin=start_time, timeMax=end_time).execute()
+        if len(events["items"]) > 0:
+                events_day = []
+                for a in range(len(events["items"])):
+                    events_day.append(
+                    { 
+                    "event_summary": events['items'][a]['summary'],
+                    "event_timezone": events['timeZone'],
+                    "event_end": (events['items'][a]['end']['dateTime'].split("T")[0],events['items'][a]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
+                    "event_start": (events['items'][a]['start']['dateTime'].split("T")[0],events['items'][a]['start']['dateTime'].split("T")[1].split("-")[0][0:5])}
+                    )
+                #print(events_day)
+                dict_dates.append(events_day)
+        else:
             dict_dates.append("")
-            text_to_print = []
+            text_to_print = [] 
     for i in range(5):
         if len(dict_dates[i]) > 0:
-            text_to_print.append(dict_dates[i]["event_summary"]  + "\n" + dict_dates[i]["event_start"][1]  + "-" + dict_dates[i]["event_end"][1])
+            day_events = []
+            for h in range(len(dict_dates[i])):
+                day_events.append(dict_dates[i][h]["event_summary"]  + "\n" + dict_dates[i][h]["event_start"][1]  + "-" + dict_dates[i][h]["event_end"][1])
+            text_to_print.append(day_events)
         else:
-            text_to_print.append("No Events")
+            text_to_print.append(["No Events"])
     return (text_to_print , name)
 
    
@@ -301,7 +308,7 @@ def get_google_information():
                     with open("message_log.txt" , "a") as file:
                         file.write(user_message + " ^% " + str(now) + "\n")
 
-                else:
+                 else:
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
                     now = datetime.now()
                     

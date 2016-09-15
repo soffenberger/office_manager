@@ -106,56 +106,62 @@ ScreenManager:
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
+                id: mon_lay
                 orientation:'horizontal'
                 Label:
+                    size_hint_x: .25
                     id: mon
                     text: "MON"
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
-                            rgba: get_color_from_hex("#00796B")
+                            rgba: get_color_from_hex("#b3cccc")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
+                    size_hint_x: .25
                     id: mon1
-                    text: root.text[0]
+                    text: "Loading"
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
+                    size_hint_x: .25
                     id: mon2
-                    text: root.text[0]
+                    text: ""
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             size: self.size 
                             pos: self.pos
                 Label:
+                    size_hint_x: .25
                     id: mon3
-                    text: root.text[0]
+                    text: ""
                     group: 'Mon'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
             BoxLayout:
+                id: tues_lay
                 orientation:'horizontal'
                 Label:
                     id: tues
@@ -163,31 +169,32 @@ ScreenManager:
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
-                            rgba: get_color_from_hex("#00796B")
+                            rgba: get_color_from_hex("#b3cccc")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
                     id: tues1
-                    text: root.text[1]
+                    text: ""
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
+                    tues2: tues2
                     id: tues2
-                    text: root.text[1]
+                    text: ""
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -195,17 +202,18 @@ ScreenManager:
                             pos: self.pos
                 Label:
                     id: tues3
-                    text: root.text[1]
+                    text: ""
                     group: 'tues'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size
             BoxLayout:
+                id: wed_lay
                 orientation:'horizontal'
                 Label:
                     id: wed
@@ -213,19 +221,19 @@ ScreenManager:
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
-                            rgba: get_color_from_hex("#00796B")
+                            rgba: get_color_from_hex("#b3cccc")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
                     id: wed1
-                    text: root.text[2]
+                    text: "Loading"
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -233,11 +241,11 @@ ScreenManager:
                             size: self.size 
                 Label:
                     id: wed2
-                    text: root.text[2]
+                    text: ""
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -245,17 +253,18 @@ ScreenManager:
                             pos: self.pos
                 Label:
                     id: wed3
-                    text: root.text[2]
+                    text: ""
                     group: 'wed'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size
             BoxLayout:
+                id: thurs_lay
                 orientation:'horizontal'
                 Label:
                     id: thurs
@@ -263,19 +272,19 @@ ScreenManager:
                     group: 'thurs'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
-                            rgba: get_color_from_hex("#00796B")
+                            rgba: get_color_from_hex("#b3cccc")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
                     id: thurs1
-                    text: root.text[3]
+                    text: "Loading"
                     group: 'thurs'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -283,11 +292,11 @@ ScreenManager:
                             size: self.size 
                 Label:
                     id: thurs2
-                    text: root.text[3]
+                    text: ""
                     group: 'thurs2'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -295,17 +304,18 @@ ScreenManager:
                             pos: self.pos
                 Label:
                     id: thurs3
-                    text: root.text[3]
+                    text: ""
                     group: 'thurs3'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
                             pos: self.pos
                             size: self.size
             BoxLayout:
+                id: fri_lay
                 orientation:'horizontal'
                 Label:
                     id: fri
@@ -313,19 +323,19 @@ ScreenManager:
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
-                            rgba: get_color_from_hex("#00796B")
+                            rgba: get_color_from_hex("#b3cccc")
                         Rectangle:
                             pos: self.pos
                             size: self.size 
                 Label:
                     id: fri1
-                    text: root.text[4]
+                    text: "Loading"
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -333,11 +343,11 @@ ScreenManager:
                             size: self.size 
                 Label:
                     id: fri2
-                    text: root.text[4]
+                    text: ""
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -345,11 +355,11 @@ ScreenManager:
                             pos: self.pos
                 Label:
                     id: fri3
-                    text: root.text[4]
+                    text: ""
                     group: 'fri'
                     font_size: 30
                     color: get_color_from_hex("#FFFFFF")
-                    canvas:
+                    canvas.before:
                         Color:
                             rgba: get_color_from_hex("#00796B")
                         Rectangle:
@@ -387,7 +397,7 @@ ScreenManager:
                 group: 'week_days'
                 font_size: 30
                 color: get_color_from_hex("#FFFFFF")
-                canvas:
+                canvas.before:
                     Color:
                         rgba: get_color_from_hex("#FF5c33")
                     Rectangle:
