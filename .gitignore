@@ -1,2 +1,7 @@
 .office_profile.json
 message_log.txt
+.phone_number.txt
+*.swl
+*.swm
+*.swn
+*.swo

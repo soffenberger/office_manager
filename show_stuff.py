@@ -6,7 +6,7 @@
 
 from __future__ import print_function
 import httplib2
-import requests 
+#import requests 
 import qrcode
 import os
 import json
@@ -282,7 +282,7 @@ def get_google_information():
             elif g["name"] == "Subject":
                     subject = g["value"]
         try:
-            if google_email in senders_email.split("<")[1].split(">")[0]:
+            if google_email in senders_email:#.split("<")[1].split(">")[0]:
                     if (str(subject_key) in str(subject) or "reset" in subject.lower()): 
                         if (str(subject).lower() != "reset"):
                                 user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
@@ -299,8 +299,8 @@ def get_google_information():
                                 with open("message_log.txt" , "a") as file:
                                     file.write("reset" + " ^% " + str(now) + "\n")
                                     user_message = ""
-            elif phone_number in senders_email.split("<")[1].split(">")[0]:
-                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']!= "reset"):
+            elif phone_number in senders_email:#.split("<")[1].split(">")[0]:
+                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
                     user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
                     now = datetime.now()
@@ -318,7 +318,7 @@ def get_google_information():
 
             else:
                 with open("message_log.txt" , "r") as file:
-                    prev_mess = file.readline()
+                    prev_mess = file.readlines()[-1].decode()
                     user_message= check_past_message(prev_mess)
                  
     
@@ -356,13 +356,10 @@ def get_phone_number():
                     return "Nothing yet"
 
 def get_num():
-    try:
-        with open(".phone_number", "r") as file:
+   if os.path.exists(".phone_number.txt"):
+        with open(".phone_number.txt", "r") as file:
             num_sig = file.readline()
         return num_sig
-    except FileNotFoundError:
-        return "Not there"
-
  
 def store_phone_number(signature):
     with open(".phone_number.txt", "w+") as file:
