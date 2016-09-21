@@ -60,13 +60,12 @@ class Dashboard(Screen):
         self.alert = get_google_information()[0]
         self.days=["mon","tues","wed","thurs","fri"]
         (self.text, self.uname) = get_google_calendar()
-        self.trigger1 = Clock.create_trigger(self.update_value, .5)
+        self.trigger1 = Clock.create_trigger(self.update_value, .0001)
         self.trigger = Clock.create_trigger(self.update_value, 30)
         super(Dashboard, self).__init__(**kwargs)
 
     def on_enter(self):
         self.trigger1()
-        self.trigger()
         
     def update_value(self, *args):
         self.alert = get_google_information()[0]    
@@ -76,6 +75,7 @@ class Dashboard(Screen):
             self.trigger()
             (self.text, self.uname) = get_google_calendar()
             for i in range(5):
+                self.ids['{0}'.format(self.days[i])].width = 5
                 try:
                     if len(self.text[i]) == 1:
                         self.ids['{0}1'.format(self.days[i])].text = self.text[i][0]
@@ -100,14 +100,15 @@ class Alert(Screen):
          
     def on_enter(self):
         (self.is_alert, self.msg, self.uname) = get_google_information()
+        print(self.msg)
         self.ids['almsg'].text = self.msg
         self.trigger()
  
     def update_value(self, *args):
         (self.is_alert, self.msg, self.uname) = get_google_information()
+        print(self.msg)
         self.ids['almsg'].text = self.msg
         if not self.is_alert:
-            #self.event.cancel() 
             self.parent.current = "Dashboard"
         else:
             self.trigger()
@@ -127,7 +128,7 @@ class change_text(Widget):
 """
 
 class office_manager(App):
-    icon = "icon1.png"
+    icon = "images/misc/icon2.png"
     title = "Office Manager"
     def build(self):
         #Clock.schedule_interval(Dashboard().update_value(), 20/1.)

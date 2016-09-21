@@ -72,7 +72,7 @@ ScreenManager:
                     size: self.width + 20, self.height + 20
                     pos: self.x - 10, self.y - 10
             Image:
-                source: "qr_code.png"
+                source: "images/misc/qr_code.png"
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
@@ -106,265 +106,237 @@ ScreenManager:
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
-                id: mon_lay
-                orientation:'horizontal'
-                Label:
-                    size_hint_x: .25
-                    id: mon
-                    text: "MON"
-                    group: 'Mon'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#b3cccc")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    size_hint_x: .25
-                    id: mon1
-                    text: "Loading"
-                    group: 'Mon'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    size_hint_x: .25
-                    id: mon2
-                    text: ""
-                    group: 'Mon'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            size: self.size 
-                            pos: self.pos
-                Label:
-                    size_hint_x: .25
-                    id: mon3
-                    text: ""
-                    group: 'Mon'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
+                padding: [0,1,0,1]
+                orientation: 'horizontal'
+                BoxLayout:
+                    id: mon0
+                    size_hint_x: .2
+                    orientation:'horizontal'
+                    Image:
+                        source: "images/days/monday.jpg"
+                        id: mon
+                        group: 'Mon'
+                BoxLayout:
+                    id: mon_lay
+                    size_hint_x: .8 
+                    Label:
+                        id: mon1
+                        text: "Loading"
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: mon2
+                        text: ""
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: mon3
+                        text: ""
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
             BoxLayout:
-                id: tues_lay
-                orientation:'horizontal'
-                Label:
-                    id: tues
-                    text: "TUES"
-                    group: 'tues'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#b3cccc")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: tues1
-                    text: ""
-                    group: 'tues'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    tues2: tues2
-                    id: tues2
-                    text: ""
-                    group: 'tues'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            size: self.size 
-                            pos: self.pos
-                Label:
-                    id: tues3
-                    text: ""
-                    group: 'tues'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
+                id: tues0
+                orientation: 'horizontal'
+                padding: [0,1,0,1]
+                BoxLayout:
+                    size_hint_x: .2
+                    Image:
+                        source: "images/days/tuesday.jpg"
+                        id: tues
+                        group: 'tues'
+                BoxLayout:
+                    id: tues_lay 
+                    size_hint_x: .8
+                    Label:
+                        id: tues1
+                        text: "Loading"
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        tues2: tues2
+                        id: tues2
+                        text: ""
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: tues3
+                        text: ""
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
             BoxLayout:
-                id: wed_lay
+                id: wed0
+                padding: [0,1,0,1]
                 orientation:'horizontal'
-                Label:
-                    id: wed
-                    text: "WED"
-                    group: 'wed'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#b3cccc")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: wed1
-                    text: "Loading"
-                    group: 'wed'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: wed2
-                    text: ""
-                    group: 'wed'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            size: self.size 
-                            pos: self.pos
-                Label:
-                    id: wed3
-                    text: ""
-                    group: 'wed'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
+                BoxLayout:
+                    size_hint_x: .2
+                    Image:
+                        source: "images/days/wednesday.jpg"
+                        id: wed
+                        group: 'wed'
+                BoxLayout:
+                    id: wed_lay
+                    size_hint_x: .8
+                    Label:
+                        id: wed1
+                        text: "Loading"
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: wed2
+                        text: ""
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: wed3
+                        text: ""
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size
             BoxLayout:
-                id: thurs_lay
                 orientation:'horizontal'
-                Label:
-                    id: thurs
-                    text: "THURS"
-                    group: 'thurs'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#b3cccc")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: thurs1
-                    text: "Loading"
-                    group: 'thurs'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: thurs2
-                    text: ""
-                    group: 'thurs2'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            size: self.size 
-                            pos: self.pos
-                Label:
-                    id: thurs3
-                    text: ""
-                    group: 'thurs3'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
+                id: thurs0
+                padding: [0,1,0,1]
+                BoxLayout:
+                    size_hint_x: .2
+                    Image:
+                        source: "images/days/thursday.jpg"
+                        id: thurs
+                        group: 'thurs'
+                BoxLayout:
+                    id: thurs_lay     
+                    size_hint_x: .8
+                    Label:
+                        id: thurs1
+                        text: "Loading"
+                        group: 'thurs'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: thurs2
+                        text: ""
+                        group: 'thurs2'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: thurs3
+                        text: ""
+                        group: 'thurs3'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
             BoxLayout:
-                id: fri_lay
+                id: fri0
                 orientation:'horizontal'
-                Label:
-                    id: fri
-                    text: "FRI"
-                    group: 'fri'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#b3cccc")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: fri1
-                    text: "Loading"
-                    group: 'fri'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size 
-                Label:
-                    id: fri2
-                    text: ""
-                    group: 'fri'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            size: self.size 
-                            pos: self.pos
-                Label:
-                    id: fri3
-                    text: ""
-                    group: 'fri'
-                    font_size: 30
-                    color: get_color_from_hex("#FFFFFF")
-                    canvas.before:
-                        Color:
-                            rgba: get_color_from_hex("#00796B")
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
+                padding: [0,1,0,1]
+                BoxLayout:
+                    size_hint_x: .2
+                    Image:
+                        source: "images/days/friday.jpg"
+                        id: fri
+                        group: 'fri'
+                BoxLayout:
+                    size_hint_x: .8
+                    id: fri_lay    
+                    Label:
+                        id: fri1
+                        text: "Loading"
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: fri2
+                        text: ""
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: fri3
+                        text: ""
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'images/days/calendar_image.jpg'
+                                pos: self.pos
+                                size: self.size 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
@@ -395,14 +367,15 @@ ScreenManager:
                 id: almsg
                 text: root.msg
                 group: 'week_days'
-                font_size: 30
-                color: get_color_from_hex("#FFFFFF")
+                font_size: 100
+                outline_width: 6
+                outline_color: get_color_from_hex("#FFFFFF")
+                color: get_color_from_hex("#000000")
                 canvas.before:
-                    Color:
-                        rgba: get_color_from_hex("#FF5c33")
-                    Rectangle:
+                    BorderImage:
+                        source: 'images/misc/alert.jpg'
                         pos: self.pos
-                        size: self.size  
+                        size: self.size 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1

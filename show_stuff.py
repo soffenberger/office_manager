@@ -258,6 +258,7 @@ def get_google_calendar():
 def get_google_information():
     (calendar_name, subject_key) = start_up()
     phone_number = get_num()
+    print(phone_number)
     global google_email
     """Shows basic usage of the Gmail API.
 
@@ -274,7 +275,7 @@ def get_google_information():
     
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
-        #print(g['name'])
+            print(g['name'], g["value"])
             if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
                     google_email = g["value"]
             elif g["name"] == "from" or g["name"] == "From" :   
@@ -282,24 +283,24 @@ def get_google_information():
             elif g["name"] == "Subject":
                     subject = g["value"]
         try:
-            if google_email in senders_email:#.split("<")[1].split(">")[0]:
-                    if (str(subject_key) in str(subject) or "reset" in subject.lower()): 
-                        if (str(subject).lower() != "reset"):
-                                user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
-                                service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                                now = datetime.now()
-                
-                                with open("message_log.txt" , "a") as file:
-                                    file.write(user_message + " ^% " + str(now) + "\n")
+            #print(google_email.split("<")[1].split(">")[0].lower(), senders_email.split("<")[1].split(">")[0].lower())
+            if google_email.split("<")[1].split(">")[0].lower() in senders_email.split("<")[1].split(">")[0].lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
+                if (str(subject).lower() != "reset"):
+                        user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
+                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                        now = datetime.now()
+        
+                        with open("message_log.txt" , "a") as file:
+                            file.write(user_message + " ^% " + str(now) + "\n")
 
-                        else:
-                                service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                                now = datetime.now()
-                    
-                                with open("message_log.txt" , "a") as file:
-                                    file.write("reset" + " ^% " + str(now) + "\n")
-                                    user_message = ""
-            elif phone_number in senders_email:#.split("<")[1].split(">")[0]:
+                else:
+                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                        now = datetime.now()
+            
+                        with open("message_log.txt" , "a") as file:
+                            file.write("reset" + " ^% " + str(now) + "\n")
+                            user_message = ""
+            elif phone_number and phone_number in senders_email:#.split("<")[1].split(">")[0]:
                  if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
                     user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
@@ -310,6 +311,7 @@ def get_google_information():
 
                  else:
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    
                     now = datetime.now()
                     
                     with open("message_log.txt" , "a") as file:
@@ -317,6 +319,7 @@ def get_google_information():
                     user_message = ""
 
             else:
+                #print("here")
                 with open("message_log.txt" , "r") as file:
                     prev_mess = file.readlines()[-1].decode()
                     user_message= check_past_message(prev_mess)
@@ -333,7 +336,9 @@ def get_google_information():
         with open(".gmail.txt", 'r') as file:
             google_email = file.read()
         name = google_email.split("<")[0] 
+        print(user_message)
         if user_message:
+            print(user_message)
             return(True, user_message, name)
         else:
             return(False, "", name)
