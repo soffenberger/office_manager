@@ -258,7 +258,7 @@ def get_google_calendar():
 def get_google_information():
     (calendar_name, subject_key) = start_up()
     phone_number = get_num()
-    print(phone_number)
+    #print(phone_number)
     global google_email
     """Shows basic usage of the Gmail API.
 
@@ -275,7 +275,7 @@ def get_google_information():
     
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
-            print(g['name'], g["value"])
+            #print(g['name'], g["value"])
             if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
                     google_email = g["value"]
             elif g["name"] == "from" or g["name"] == "From" :   
@@ -336,9 +336,9 @@ def get_google_information():
         with open(".gmail.txt", 'r') as file:
             google_email = file.read()
         name = google_email.split("<")[0] 
-        print(user_message)
+        #print(user_message)
         if user_message:
-            print(user_message)
+            #print(user_message)
             return(True, user_message, name)
         else:
             return(False, "", name)

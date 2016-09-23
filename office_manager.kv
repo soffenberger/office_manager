@@ -12,6 +12,10 @@
 ScreenManager:
     id: screen_manager
     #transition: FadeTransition()
+    Dashboard:
+        id: Dashboard
+        name: 'Dashboard'
+        manager: 'screen_manager' 
     MenuScreen:
         id: menu_screen
         name: 'Menu'
@@ -24,10 +28,7 @@ ScreenManager:
         id: About_Us
         name: 'About_Us'
         manager: 'screen_manager'
-    Dashboard:
-        id: Dashboard
-        name: 'Dashboard'
-        manager: 'screen_manager'
+    
     Alert:
         id: Alert
         name: 'Alert'
@@ -354,9 +355,11 @@ ScreenManager:
                 font_size: 20
             Button:
                 size_hint_x: .25
-                text: 'Sign Out'
+                text: 'Menu'
                 group: 'sign_out'
                 font_size: 20
+                on_press:
+                    app.root.current = "Menu"
 
 <Alert>:
     BoxLayout:
@@ -393,9 +396,11 @@ ScreenManager:
                 font_size: 20
             Button:
                 size_hint_x: .25
-                text: 'Sign Out'
+                text: 'Menu'
                 group: 'sign_out'
                 font_size: 20
+                on_press:
+                    app.root.current = "Menu"
 
 
 <SignIn>:
@@ -428,27 +433,59 @@ ScreenManager:
                 text: "No"
                 on_press:
                     root.refresh()
+            Button:
+                id: "Menu"
+                text: "Menu"
+                on_press:
+                    app.root.current = "Menu"
             
 
 <About_Us>:
     BoxLayout:
         orientation: 'vertical'
-        Label:
-            text: 'load a game'
-            font_size: 30
-        Widget:
-            canvas:
-                Ellipse:
-                    pos: self.pos
-                    size: self.size
         BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .4
+            Label:
+                text: 'Frank'
+                font_size: 30
+            Label:
+                text: 'Spencer'
+                font_size: 30
+            Label:
+                text: 'Emannuel'
+                font_size: 30
+            Label:
+                text: 'Luis'
+                font_size: 30
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .5
+            Label:
+                text: 'Email: soffenbe@asu.edu'
+            Label:
+                text: 'github: https://github.com/soffenberger/office_manager.git'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
             Button:
+                size_hint_x: .25
+                text: 'Idk'
+                group: 'send_message'
+                font_size: 20
+            Label:
+                size_hint_x: .5
+                text: 'Office Manager'
+                group: 'name'
+                font_size: 20
+            Button:
+                size_hint_x: .25
                 text: 'Menu'
-                font_size: 30
-                on_release: app.root.current = 'menu'
-            Button:
-                text: 'text'
-                font_size: 30
+                group: 'sign_out'
+                font_size: 20
+                on_press:
+                    app.root.current = "Menu" 
 
+    
 
 
