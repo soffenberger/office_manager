@@ -198,6 +198,8 @@ def get_credentials():
 
 ###### Google hangouts information ####################
 
+def need_to_set_calendar():
+	pass
 
 
 
@@ -215,39 +217,47 @@ def get_google_calendar():
     for g in calendars['items']:
         if g['summary'] == calendar_name:
             calendar_id = g['id']
+			calendar_exists = True
+		else:
+			need_to_set_calendar()
+			calendar_exists = False
 
-    now = datetime.now()
-    dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
-    dict_dates = []
-    for i in dates:
-        start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
-        end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
-        #print(events, start_time) 
-        events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 3, timeMin=start_time, timeMax=end_time).execute()
-        if len(events["items"]) > 0:
-                events_day = []
-                for a in range(len(events["items"])):
-                    events_day.append(
-                    { 
-                    "event_summary": events['items'][a]['summary'],
-                    "event_timezone": events['timeZone'],
-                    "event_end": (events['items'][a]['end']['dateTime'].split("T")[0],events['items'][a]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
-                    "event_start": (events['items'][a]['start']['dateTime'].split("T")[0],events['items'][a]['start']['dateTime'].split("T")[1].split("-")[0][0:5])}
-                    )
-                #print(events_day)
-                dict_dates.append(events_day)
-        else:
-            dict_dates.append("")
-            text_to_print = [] 
-    for i in range(5):
-        if len(dict_dates[i]) > 0:
-            day_events = []
-            for h in range(len(dict_dates[i])):
-                day_events.append(dict_dates[i][h]["event_summary"]  + "\n" + dict_dates[i][h]["event_start"][1]  + "-" + dict_dates[i][h]["event_end"][1])
-            text_to_print.append(day_events)
-        else:
-            text_to_print.append(["No Events"])
-    return (text_to_print , name)
+	if calendar_exists:
+		now = datetime.now()
+		dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
+		dict_dates = []
+		for i in dates:
+			start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
+			end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
+			#print(events, start_time) 
+			events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 3, timeMin=start_time, timeMax=end_time).execute()
+			if len(events["items"]) > 0:
+				events_day = []
+				for a in range(len(events["items"])):
+					events_day.append(
+					{ 
+					"event_summary": events['items'][a]['summary'],
+					"event_timezone": events['timeZone'],
+					"event_end": (events['items'][a]['end']['dateTime'].split("T")[0],events['items'][a]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
+					"event_start": (events['items'][a]['start']['dateTime'].split("T")[0],events['items'][a]['start']['dateTime'].split("T")[1].split("-")[0][0:5])}
+							)
+					#print(events_day)
+					dict_dates.append(events_day)
+			else:
+				dict_dates.append("")
+				text_to_print = [] 
+			for i in range(5):
+				if len(dict_dates[i]) > 0:
+					day_events = []
+					for h in range(len(dict_dates[i])):
+						day_events.append(dict_dates[i][h]["event_summary"]  + "\n" + dict_dates[i][h]["event_start"][1]  + "-" + dict_dates[i][h]["event_end"][1])
+					text_to_print.append(day_events)
+				else:
+					text_to_print.append(["No Events"])
+    else:
+		text_to_print = ""
+		name = ""		
+	return (text_to_print , name, calendar_exists)
 
    
 ####### Function that connects gmail and looks for messages #######3
