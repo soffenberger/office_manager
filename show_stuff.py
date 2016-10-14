@@ -79,6 +79,7 @@ def start_up():
     
 
 def check_past_message(message):
+    print("Message " + message)
     time = message.split(" ^% ")[1].replace("\n","")
     time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S.%f")
     mss = message.split(" ^% ")[0]
@@ -91,8 +92,7 @@ def check_past_message(message):
             user_message = mss
         else:
             user_message = ""
-            
-        
+    print("Output" + user_message) 
     return user_message
                 
 """
@@ -284,7 +284,7 @@ def get_google_information():
                     subject = g["value"]
         try:
             #print(google_email.split("<")[1].split(">")[0].lower(), senders_email.split("<")[1].split(">")[0].lower())
-            if google_email.split("<")[1].split(">")[0].lower() in senders_email.split("<")[1].split(">")[0].lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
+            if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
                 if (str(subject).lower() != "reset"):
                         user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
                         service.users().messages().delete(userId = 'me', id = i['id']).execute()
@@ -300,7 +300,7 @@ def get_google_information():
                         with open("message_log.txt" , "a") as file:
                             file.write("reset" + " ^% " + str(now) + "\n")
                             user_message = ""
-            elif phone_number and phone_number in senders_email:#.split("<")[1].split(">")[0]:
+            elif phone_number and phone_number in senders_email:
                  if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
                     user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
@@ -319,9 +319,8 @@ def get_google_information():
                     user_message = ""
 
             else:
-                #print("here")
                 with open("message_log.txt" , "r") as file:
-                    prev_mess = file.readlines()[-1].decode()
+                    prev_mess = file.readlines()[-1]#.decode()
                     user_message= check_past_message(prev_mess)
                  
     
@@ -336,7 +335,6 @@ def get_google_information():
         with open(".gmail.txt", 'r') as file:
             google_email = file.read()
         name = google_email.split("<")[0] 
-        #print(user_message)
         if user_message:
             #print(user_message)
             return(True, user_message, name)
