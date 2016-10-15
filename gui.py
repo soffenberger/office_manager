@@ -59,7 +59,7 @@ class Dashboard(Screen):
     def __init__(self, **kwargs):
         self.alert = get_google_information()[0]
         self.days=["mon","tues","wed","thurs","fri"]
-        (self.text, self.uname) = get_google_calendar()
+        (self.text, self.uname, self.issetup) = get_google_calendar()
         self.trigger1 = Clock.create_trigger(self.update_value, .0001)
         self.trigger = Clock.create_trigger(self.update_value, 30)
         super(Dashboard, self).__init__(**kwargs)
@@ -73,7 +73,7 @@ class Dashboard(Screen):
             self.parent.current =  "Alert"
         else:
             self.trigger()
-            (self.text, self.uname) = get_google_calendar()
+            (self.text, self.uname, self.issetup) = get_google_calendar()
             for i in range(5):
                 self.ids['{0}'.format(self.days[i])].width = 5
                 try:

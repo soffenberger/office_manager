@@ -29,6 +29,7 @@ import parsedatetime as pdt
 
 try:
     import argparse
+    #flags = argparse.Namespace(auth_host_name='localhost', auth_host_port=[8080, 8090], logging_level='ERROR', noauth_local_webserver=True)
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
@@ -47,7 +48,7 @@ except ImportError:
 # at ~/.credentials/gmail-python-quickstart.json
 # Can add more API's in the future when it gets there
 #'https://mail.google.com/' + 
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com/' 
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com' + ' https://www.googleapis.com/auth/plus.me' 
 CLIENT_SECRET_FILE = 'client.json'
 APPLICATION_NAME = 'Office Manager'
 
@@ -165,7 +166,8 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-            
+            #print(credentials)        
+    
         #else: # Needed only for compatibility with Python 2.6
         #    credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
@@ -196,10 +198,21 @@ def get_credentials():
     return (conn.json()['user_code'], conn.json()['device_code'])
     """
 
+###### Get google email ###############
+
+def get_name():
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service2 = discovery.build('plus', 'v1', http=http)
+    user = service2.people().get(userId = 'me').execute()
+    return str(user["displayName"])
+
+
+
 ###### Google hangouts information ####################
 
 def need_to_set_calendar():
-	pass
+    pass
 
 
 
@@ -211,53 +224,53 @@ def get_google_calendar():
     http = credentials.authorize(httplib2.Http())
     service2 = discovery.build('calendar', 'v3', http=http)
     calendars = service2.calendarList().list().execute()
-    with open(".gmail.txt", 'r') as file:
-        google_email = file.read()
-        name = google_email.split("<")[0] 
+    #with open(".gmail.txt", 'r') as file:
+    #    google_email = file.read()
+    name = get_name()
     for g in calendars['items']:
         if g['summary'] == calendar_name:
             calendar_id = g['id']
-			calendar_exists = True
-		else:
-			need_to_set_calendar()
-			calendar_exists = False
-
-	if calendar_exists:
-		now = datetime.now()
-		dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
-		dict_dates = []
-		for i in dates:
-			start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
-			end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
-			#print(events, start_time) 
-			events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 3, timeMin=start_time, timeMax=end_time).execute()
-			if len(events["items"]) > 0:
-				events_day = []
-				for a in range(len(events["items"])):
-					events_day.append(
-					{ 
-					"event_summary": events['items'][a]['summary'],
-					"event_timezone": events['timeZone'],
-					"event_end": (events['items'][a]['end']['dateTime'].split("T")[0],events['items'][a]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
-					"event_start": (events['items'][a]['start']['dateTime'].split("T")[0],events['items'][a]['start']['dateTime'].split("T")[1].split("-")[0][0:5])}
-							)
-					#print(events_day)
-					dict_dates.append(events_day)
-			else:
-				dict_dates.append("")
-				text_to_print = [] 
-			for i in range(5):
-				if len(dict_dates[i]) > 0:
-					day_events = []
-					for h in range(len(dict_dates[i])):
-						day_events.append(dict_dates[i][h]["event_summary"]  + "\n" + dict_dates[i][h]["event_start"][1]  + "-" + dict_dates[i][h]["event_end"][1])
-					text_to_print.append(day_events)
-				else:
-					text_to_print.append(["No Events"])
+            calendar_exists = True
+            break
+        else:
+            need_to_set_calendar()
+            calendar_exists = False
+    if calendar_exists:
+        now = datetime.now()
+        dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
+        dict_dates = []
+        for i in dates:
+            start_time = i.strftime("%Y-%m-%dT0:0:0") + "Z"
+            end_time = i.strftime("%Y-%m-%dT23:59:59") + "Z"
+            #print(events, start_time) 
+            events = service2.events().list(calendarId = calendar_id, singleEvents = 1, maxResults = 3, timeMin=start_time, timeMax=end_time).execute()
+            if len(events["items"]) > 0:
+                events_day = []
+                for a in range(len(events["items"])):
+                    events_day.append(
+                    { 
+                    "event_summary": events['items'][a]['summary'],
+                    "event_timezone": events['timeZone'],
+                    "event_end": (events['items'][a]['end']['dateTime'].split("T")[0],events['items'][a]['end']['dateTime'].split("T")[1].split("-")[0][0:5]),
+                    "event_start": (events['items'][a]['start']['dateTime'].split("T")[0],events['items'][a]['start']['dateTime'].split("T")[1].split("-")[0][0:5])}
+                            )
+                    #print(events_day)
+                    dict_dates.append(events_day)
+            else:
+                dict_dates.append("")
+                text_to_print = [] 
+        for i in range(5):
+            if len(dict_dates[i]) > 0:
+                day_events = []
+                for h in range(len(dict_dates[i])):
+                    day_events.append(dict_dates[i][h]["event_summary"]  + "\n" + dict_dates[i][h]["event_start"][1]  + "-" + dict_dates[i][h]["event_end"][1])
+                    text_to_print.append(day_events)
+            else:
+                text_to_print.append(["No Events"])
     else:
-		text_to_print = ""
-		name = ""		
-	return (text_to_print , name, calendar_exists)
+        text_to_print = ""
+        name = ""       
+    return (text_to_print , name, calendar_exists)
 
    
 ####### Function that connects gmail and looks for messages #######3
@@ -269,7 +282,6 @@ def get_google_information():
     (calendar_name, subject_key) = start_up()
     phone_number = get_num()
     #print(phone_number)
-    global google_email
     """Shows basic usage of the Gmail API.
 
     Creates a Gmail API service object and outputs a list of label names
@@ -337,14 +349,14 @@ def get_google_information():
         except IndexError as e:
             pass
     
-        if os.path.exists(".gmail.txt"):
-            pass
-        else:
-            with open(".gmail.txt", 'w+') as file:
-                file.write(google_email) 
-        with open(".gmail.txt", 'r') as file:
-            google_email = file.read()
-        name = google_email.split("<")[0] 
+        #if os.path.exists(".gmail.txt"):
+        #    pass
+        #else:
+        #    with open(".gmail.txt", 'w+') as file:
+        #        file.write(google_email) 
+        #with open(".gmail.txt", 'r') as file:
+        #    google_email = file.read()
+        name = get_name()#google_email.split("<")[0] 
         if user_message:
             #print(user_message)
             return(True, user_message, name)
