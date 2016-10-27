@@ -63,7 +63,12 @@ ScreenManager:
 <Full_Image>:
     BoxLayout:
         orientation: 'vertical'
-        BoxLayout:
+        canvas.before:
+        	Rectangle:
+            	pos: self.pos
+            	size: self.size
+            	source: "images/days/modern/Background_2.png" 
+		BoxLayout:
             #size_hint_x: .8
             #width: 200
             orientation: 'horizontal'   
@@ -407,19 +412,24 @@ ScreenManager:
 <Alert>:
     BoxLayout:
         orientation: 'vertical'
-        BoxLayout:
+        canvas.before:
+        	Rectangle:
+            	pos: self.pos
+            	size: self.size
+            	source: "images/days/modern/Background_2.png" 
+		BoxLayout:
             orientation: 'horizontal'
             Label:
                 id: almsg
                 text: root.msg
                 group: 'week_days'
-                font_size: 40
+                font_size: 60
                 outline_width: 6
                 outline_color: get_color_from_hex("#FFFFFF")
-                color: get_color_from_hex("#000000")
+                color: get_color_from_hex("#FFFFFF")
                 canvas.before:
                     BorderImage:
-                        source: 'images/misc/alert.jpg'
+                        source: 'images/days/modern/modern_message_block2.png'
                         pos: self.pos
                         size: self.size 
         BoxLayout:
