@@ -4,6 +4,7 @@
 #: import get_color_from_hex kivy.utils.get_color_from_hex
 #: import Clock kivy.clock.Clock
 #: import Image kivy.uix.image.Image
+#: import color kivy.uix.image.Image
 #: import sleep time.sleep
 #: import BorderImage kivy.graphics.BorderImage
 
@@ -82,6 +83,12 @@ ScreenManager:
                 text: 'Return'
                 group: 'send_message'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
                 on_press:
                     app.root.current = "Dashboard"
             Label:
@@ -94,6 +101,12 @@ ScreenManager:
                 size_hint_x: .25
                 group: 'sign_out'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size
         
  
         
@@ -102,11 +115,11 @@ ScreenManager:
 
 <Dashboard>:
     id: Dashboard
-	canvas.before:
-	    Rectangle:
-			pos: self.pos
-			size: self.size
-			source: "images/days/modern/Background_2.png" 
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "images/days/modern/Background_2.png" 
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -115,9 +128,9 @@ ScreenManager:
                 orientation: 'horizontal'
                 BoxLayout:
                     id: mon0
-		    		padding: (0,0,0,10)
+                    padding: (0,0,0,10)
                     size_hint: (.2,None)
-		    		size: (90,100)
+                    size: (90,100)
                     orientation:'horizontal'
                     Image:
                         source: "images/days/modern/modern_monday.png"
@@ -126,7 +139,7 @@ ScreenManager:
                 BoxLayout:
                     id: mon_lay
                     size_hint_x: .8 
-					padding: (0,10,10,10)
+                    padding: (0,10,10,10)
                     Label:
                         id: mon1
                         text: "Loading"
@@ -134,10 +147,10 @@ ScreenManager:
                         font_size: 30
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
-							Rectangle:
+                            Rectangle:
                                 pos: self.pos
-                                size: self.size	
-								source: "images/days/modern/modern_message_block.png"
+                                size: self.size 
+                                source: "images/days/modern/modern_message_block.png"
                     Label:
                         id: mon2
                         text: ""
@@ -164,15 +177,15 @@ ScreenManager:
                 id: tues0
                 orientation: 'horizontal'
                 BoxLayout:
-					padding: (0,0,0,10)
+                    padding: (0,0,0,10)
                     size_hint: (.2,None)
-					size: (90,100)
+                    size: (90,100)
                     Image:
                         source: "images/days/modern/modern_tuesday.png"
                         id: tues
                         group: 'tues'
                 BoxLayout:
-					padding: (0,10,10,10)
+                    padding: (0,10,10,10)
                     id: tues_lay 
                     size_hint_x: .8
                     Label:
@@ -181,11 +194,13 @@ ScreenManager:
                         group: 'tues'
                         font_size: 30
                         color: get_color_from_hex("#FFFFFF")
-                        canvas.before:
-                            BorderImage:
-                                source: 'images/days/modern/modern_message_block.png'
+                        canvas.before: 
+                            Rectangle:
                                 pos: self.pos
-                                size: self.size 
+                                size: self.size
+                                source: 'images/days/modern/modern_message_block.png'
+                                #Color:
+                                 #   rgb: (1,1,1,1)
                     Label:
                         tues2: tues2
                         id: tues2
@@ -213,15 +228,15 @@ ScreenManager:
                 id: wed0
                 orientation:'horizontal'
                 BoxLayout:
-					padding: (0,0,0,10)
+                    padding: (0,0,0,10)
                     size_hint: (.2,None)
-					size: (90,100)
+                    size: (90,100)
                     Image:
                         source: "images/days/modern/modern_wednesday.png"
                         id: wed
                         group: 'wed'
                 BoxLayout:
-					padding: (0,10,10,10)
+                    padding: (0,10,10,10)
                     id: wed_lay
                     size_hint_x: .8
                     Label:
@@ -261,15 +276,15 @@ ScreenManager:
                 orientation:'horizontal'
                 id: thurs0
                 BoxLayout:
-					padding: (0,0,0,10)
+                    padding: (0,0,0,10)
                     size_hint: (.2,None)
-					size: (90,100)
+                    size: (90,100)
                     Image:
                         source: "images/days/modern/modern_thursday.png"
                         id: thurs
                         group: 'thurs'
                 BoxLayout:
-					padding: (0,10,10,10)
+                    padding: (0,10,10,10)
                     id: thurs_lay     
                     size_hint_x: .8
                     Label:
@@ -309,15 +324,15 @@ ScreenManager:
                 id: fri0
                 orientation: 'horizontal'
                 BoxLayout:
-					padding: (0,0,0,10)
+                    padding: (0,0,0,10)
                     size_hint: (.2,None)
-					size: (900,100)
+                    size: (900,100)
                     Image:
                         source: "images/days/modern/modern_friday.png"
                         id: fri
                         group: 'fri'
                 BoxLayout:
-					padding: (0,10,10,10)
+                    padding: (0,10,10,10)
                     size_hint_x: .8
                     id: fri_lay    
                     Label:
@@ -361,6 +376,13 @@ ScreenManager:
                 text: 'Leave Message'
                 group: 'send_message'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
+
                 on_press:
                     app.root.current = "Full_Image"
             Label:
@@ -373,6 +395,12 @@ ScreenManager:
                 text: 'Menu'
                 group: 'sign_out'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
                 on_press:
                     app.root.current = "Menu"
 
@@ -402,6 +430,12 @@ ScreenManager:
                 text: 'Leave Message'
                 group: 'send_message'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
                 on_press:
                     app.root.current = "Full_Image"
             Label:
@@ -414,6 +448,12 @@ ScreenManager:
                 text: 'Menu'
                 group: 'sign_out'
                 font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'images/days/modern/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
                 on_press:
                     app.root.current = "Menu"
 
