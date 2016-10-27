@@ -7,7 +7,7 @@
 #: import sleep time.sleep
 #: import BorderImage kivy.graphics.BorderImage
 
-
+   
 
 ScreenManager:
     id: screen_manager
@@ -102,24 +102,31 @@ ScreenManager:
 
 <Dashboard>:
     id: Dashboard
+	canvas.before:
+	    Rectangle:
+			pos: self.pos
+			size: self.size
+			source: "images/days/modern/Background_2.png" 
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
-                padding: [0,1,0,1]
                 orientation: 'horizontal'
                 BoxLayout:
                     id: mon0
-                    size_hint_x: .2
+		    		padding: (0,0,0,10)
+                    size_hint: (.2,None)
+		    		size: (90,100)
                     orientation:'horizontal'
                     Image:
-                        source: "images/days/monday.jpg"
+                        source: "images/days/modern/modern_monday.png"
                         id: mon
                         group: 'Mon'
                 BoxLayout:
                     id: mon_lay
                     size_hint_x: .8 
+					padding: (0,10,10,10)
                     Label:
                         id: mon1
                         text: "Loading"
@@ -127,10 +134,10 @@ ScreenManager:
                         font_size: 30
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
-                            BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+							Rectangle:
                                 pos: self.pos
-                                size: self.size 
+                                size: self.size	
+								source: "images/days/modern/modern_message_block.png"
                     Label:
                         id: mon2
                         text: ""
@@ -139,7 +146,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -150,20 +157,22 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
             BoxLayout:
                 id: tues0
                 orientation: 'horizontal'
-                padding: [0,1,0,1]
                 BoxLayout:
-                    size_hint_x: .2
+					padding: (0,0,0,10)
+                    size_hint: (.2,None)
+					size: (90,100)
                     Image:
-                        source: "images/days/tuesday.jpg"
+                        source: "images/days/modern/modern_tuesday.png"
                         id: tues
                         group: 'tues'
                 BoxLayout:
+					padding: (0,10,10,10)
                     id: tues_lay 
                     size_hint_x: .8
                     Label:
@@ -174,7 +183,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -186,7 +195,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -197,20 +206,22 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
             BoxLayout:
                 id: wed0
-                padding: [0,1,0,1]
                 orientation:'horizontal'
                 BoxLayout:
-                    size_hint_x: .2
+					padding: (0,0,0,10)
+                    size_hint: (.2,None)
+					size: (90,100)
                     Image:
-                        source: "images/days/wednesday.jpg"
+                        source: "images/days/modern/modern_wednesday.png"
                         id: wed
                         group: 'wed'
                 BoxLayout:
+					padding: (0,10,10,10)
                     id: wed_lay
                     size_hint_x: .8
                     Label:
@@ -221,7 +232,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size
                     Label:
@@ -232,7 +243,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size
                     Label:
@@ -243,20 +254,22 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size
             BoxLayout:
                 orientation:'horizontal'
                 id: thurs0
-                padding: [0,1,0,1]
                 BoxLayout:
-                    size_hint_x: .2
+					padding: (0,0,0,10)
+                    size_hint: (.2,None)
+					size: (90,100)
                     Image:
-                        source: "images/days/thursday.jpg"
+                        source: "images/days/modern/modern_thursday.png"
                         id: thurs
                         group: 'thurs'
                 BoxLayout:
+					padding: (0,10,10,10)
                     id: thurs_lay     
                     size_hint_x: .8
                     Label:
@@ -267,7 +280,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size
                     Label:
@@ -278,7 +291,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -289,20 +302,22 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
             BoxLayout:
                 id: fri0
-                orientation:'horizontal'
-                padding: [0,1,0,1]
+                orientation: 'horizontal'
                 BoxLayout:
-                    size_hint_x: .2
+					padding: (0,0,0,10)
+                    size_hint: (.2,None)
+					size: (900,100)
                     Image:
-                        source: "images/days/friday.jpg"
+                        source: "images/days/modern/modern_friday.png"
                         id: fri
                         group: 'fri'
                 BoxLayout:
+					padding: (0,10,10,10)
                     size_hint_x: .8
                     id: fri_lay    
                     Label:
@@ -313,7 +328,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -324,7 +339,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
                     Label:
@@ -335,7 +350,7 @@ ScreenManager:
                         color: get_color_from_hex("#FFFFFF")
                         canvas.before:
                             BorderImage:
-                                source: 'images/days/calendar_image.jpg'
+                                source: 'images/days/modern/modern_message_block.png'
                                 pos: self.pos
                                 size: self.size 
         BoxLayout:
