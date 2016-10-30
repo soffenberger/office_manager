@@ -61,8 +61,8 @@ class Dashboard(Screen):
         self.alert = get_google_information()[0]
         self.days=["mon","tues","wed","thurs","fri"]
         (self.text, self.uname, self.issetup) = get_google_calendar()
-        self.trigger1 = Clock.create_trigger(self.update_value, .0001)
-        self.trigger = Clock.create_trigger(self.update_value, 30)
+        self.trigger1 = Clock.create_trigger(self.update_value, .01)
+        self.trigger = Clock.create_trigger(self.update_value, 10)
         super(Dashboard, self).__init__(**kwargs)
 
     def on_enter(self):
@@ -132,7 +132,11 @@ class office_manager(App):
     icon = "images/misc/icon2.png"
     title = "Office Manager"
     Window.size = (800,480)
-    Window.fullscreen =1 
+    try:
+        if int(sys.argv[1]) == 1:
+	        Window.fullscreen =1
+    except IndexError:
+        pass
     def build(self):
         #Clock.schedule_interval(Dashboard().update_value(), 20/1.)
         return buildKV

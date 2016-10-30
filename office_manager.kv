@@ -40,8 +40,13 @@ ScreenManager:
         manager: 'screen_manager' 
 
 <MenuScreen>:
-    BoxLayout:
-        orientation: 'vertical'
+	BoxLayout:
+		orientation: 'vertical'
+		canvas.before:
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "images/days/modern/Background_2.png"	
         Label:
             text: 'Office Manager'
             font_size: 30
@@ -49,25 +54,45 @@ ScreenManager:
             text: 'Dashboard'
             font_size: 30
             on_release: app.root.current = 'Dashboard'
+			background_color: (0,0,0,0)
+			canvas:
+				Rectangle:
+					source: 'images/days/modern/modern_message_block.png'
+                    pos: self.pos
+                    size: self.size
         Button:
             text: 'Set Up'
             font_size: 30
             on_release: app.root.current = 'SignIn'
+			background_color: (0,0,0,0)
+			canvas:
+				Rectangle:
+					source: 'images/days/modern/modern_message_block.png'
+                    pos: self.pos
+                    size: self.size
+
         Button:
             text: 'About Us'
             font_size: 30
             on_release: app.root.current = 'About_Us'
+			background_color: (0,0,0,0)
+			canvas:
+				Rectangle:
+					source: 'images/days/modern/modern_message_block.png'
+                    pos: self.pos
+                    size: self.size
+
 
 
 
 <Full_Image>:
-    BoxLayout:
+	BoxLayout:
         orientation: 'vertical'
         canvas.before:
-        	Rectangle:
-            	pos: self.pos
-            	size: self.size
-            	source: "images/days/modern/Background_2.png" 
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "images/days/modern/Background_2.png" 
 		BoxLayout:
             #size_hint_x: .8
             #width: 200
@@ -413,10 +438,10 @@ ScreenManager:
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
-        	Rectangle:
-            	pos: self.pos
-            	size: self.size
-            	source: "images/days/modern/Background_2.png" 
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "images/days/modern/Background_2.png" 
 		BoxLayout:
             orientation: 'horizontal'
             Label:
@@ -471,7 +496,12 @@ ScreenManager:
 <SignIn>:
     BoxLayout:
         orientation: 'vertical'
-        BoxLayout:
+        canvas.before:
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "images/days/modern/Background_2.png"
+		BoxLayout:
             orientation: 'vertical'
             Label:
                 text: 'Send a Text to your gmail'
@@ -490,54 +520,113 @@ ScreenManager:
             Button:
                 id: "Yes"
                 text: 'Yes'
-                on_press:
+                background_color: (0,0,0,0)
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+				on_press:
                     root.leave()
                 
             Button:
                 id: "No"
                 text: "No"
-                on_press:
+                background_color: (0,0,0,0)
+                canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+				on_press:
                     root.refresh()
             Button:
                 id: "Menu"
                 text: "Menu"
-                on_press:
+                background_color: (0,0,0,0)
+                canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+				on_press:
                     app.root.current = "Menu"
             
 
 <About_Us>:
     BoxLayout:
         orientation: 'vertical'
-        BoxLayout:
+        canvas.before:
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "images/days/modern/Background_2.png"
+		BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .4
             Label:
-                text: 'Frank'
-                font_size: 30
+                text: 'Frank Tsang'
+                font_size: 15
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
             Label:
-                text: 'Spencer'
-                font_size: 30
+                text: 'Spencer Offenberger'
+                font_size: 15
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size
             Label:
-                text: 'Emannuel'
-                font_size: 30
+                text: 'Emannuel Gonzales'
+                font_size: 15
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
             Label:
-                text: 'Luis'
-                font_size: 30
+                text: 'Luis Moreno'
+                font_size: 15
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .5
             Label:
                 text: 'Email: soffenbe@asu.edu'
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
             Label:
                 text: 'github: https://github.com/soffenberger/office_manager.git'
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
             Button:
                 size_hint_x: .25
                 text: 'Idk'
-                group: 'send_message'
+                background_color: (0,0,0,0)
+				group: 'send_message'
                 font_size: 20
+				canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
             Label:
                 size_hint_x: .5
                 text: 'Office Manager'
@@ -547,8 +636,14 @@ ScreenManager:
                 size_hint_x: .25
                 text: 'Menu'
                 group: 'sign_out'
-                font_size: 20
-                on_press:
+                background_color: (0,0,0,0)
+				font_size: 20
+                canvas.before:
+                    BorderImage:
+                        source: 'images/days/modern/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+				on_press:
                     app.root.current = "Menu" 
 
     

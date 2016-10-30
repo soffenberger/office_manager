@@ -80,7 +80,7 @@ def start_up():
     
 
 def check_past_message(message):
-    print("Message " + message)
+    #print("Message " + message)
     time = message.split(" ^% ")[1].replace("\n","")
     time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S.%f")
     mss = message.split(" ^% ")[0]
@@ -91,6 +91,7 @@ def check_past_message(message):
         parse_time = cal.parseDT(mss, time)
         if (parse_time[1] == 0 or datetime.now() < parse_time[0]):
             user_message = mss
+    #    user_message = mss
         else:
             user_message = ""
     print("Output" + user_message) 
@@ -349,11 +350,11 @@ def get_google_information():
         except IndexError as e:
             pass
     
-        #if os.path.exists(".gmail.txt"):
-        #    pass
-        #else:
-        #    with open(".gmail.txt", 'w+') as file:
-        #        file.write(google_email) 
+        if os.path.exists(".gmail.txt"):
+            pass
+        else:
+            with open(".gmail.txt", 'w+') as file:
+                file.write(google_email) 
         #with open(".gmail.txt", 'r') as file:
         #    google_email = file.read()
         name = get_name()#google_email.split("<")[0] 
@@ -373,7 +374,9 @@ def get_phone_number():
     
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']: 
-            if g["name"] == "from" or g["name"] == "From" :   
+            #print(g)
+            if g["name"] == "from" or g["name"] == "From" :
+                #print(g["value"][0])   
                 if g["value"][0].isdigit():
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
                     return g["value"]
@@ -393,7 +396,7 @@ def store_phone_number(signature):
     
 def qr_code():
     with open(".gmail.txt", 'r') as file:
-        email = file.readline() 
+        email = email = file.readline()
     qr = qrcode.QRCode(
     version=2,
     error_correction=qrcode.constants.ERROR_CORRECT_H,
