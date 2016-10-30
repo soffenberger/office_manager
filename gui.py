@@ -13,6 +13,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.lang import Builder
 from kivy.uix.image import Image
 from kivy.properties import ObjectProperty
+from kivy.core.window import Window
 import sys
 
 
@@ -130,6 +131,8 @@ class change_text(Widget):
 class office_manager(App):
     icon = "images/misc/icon2.png"
     title = "Office Manager"
+    Window.size = (800,480)
+    Window.fullscreen =1 
     def build(self):
         #Clock.schedule_interval(Dashboard().update_value(), 20/1.)
         return buildKV
