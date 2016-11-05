@@ -6,7 +6,6 @@
 
 from __future__ import print_function
 import httplib2
-#import requests 
 import qrcode
 import os
 import json
@@ -36,9 +35,6 @@ except ImportError:
 
 ####### Things that should be configured by the users ########################
 
-#calendar_name = "Official"
-#subject_key = "Note"
-
 
 
     
@@ -57,18 +53,6 @@ APPLICATION_NAME = 'Office Manager'
 
 
 def start_up(): 
-    if  os.path.exists(".office_profile.json"):
-        with open(".office_profile.json", "r") as file:
-            data = json.load(file)
-            calendar_name = "Official" #data["calendar_name"]
-            subject_key = "Note" #data["subject_key"]
-            
-    else:
-        with open(".office_profile.json", "w+") as file:
-            calendar_name = "Official"
-            subject_key = "Note"
-            data = {"calendar_name": calendar_name, "subject_key": subject_key}
-            json.dump(data, file)
     if os.path.exists("message_log.txt"):
         pass
     else:
@@ -76,11 +60,43 @@ def start_up():
             os.utime("message_log.txt", None)
 
     return (calendar_name, subject_key)
+          
+
+def check_for_alert():
+	get_credentials()
+	for i in messages['messages']:
+        for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
+            if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
+                    google_email = g["value"]
+            elif g["name"] == "from" or g["name"] == "From" :   
+                    senders_email = g["value"]
+            elif g["name"] == "Subject":
+                    subject = g["value"]
+        try:
+            if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
+                if (str(subject).lower() != "reset"):
+                        user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
+                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                        now = datetime.now()
+        
+                        with open("message_log.txt" , "a") as file:
+                            file.write(user_message + " ^% " + str(now) + "\n")
+
+                else:
+                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                        now = datetime.now()
             
-    
+                        with open("message_log.txt" , "a") as file:
+                            file.write("reset" + " ^% " + str(now) + "\n")
+                            user_message = ""
+            elif phone_number and phone_number in senders_email:
+                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
+                    user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
+                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    now = datetime.now()
+     	 
 
 def check_past_message(message):
-    #print("Message " + message)
     time = message.split(" ^% ")[1].replace("\n","")
     time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S.%f")
     mss = message.split(" ^% ")[0]
@@ -220,13 +236,11 @@ def need_to_set_calendar():
 ###### Switching the calendar info to its own function ######
 
 def get_google_calendar():
-    (calendar_name, subject_key) = start_up()
+	calendar_name = "Official"
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service2 = discovery.build('calendar', 'v3', http=http)
     calendars = service2.calendarList().list().execute()
-    #with open(".gmail.txt", 'r') as file:
-    #    google_email = file.read()
     name = get_name()
     for g in calendars['items']:
         if g['summary'] == calendar_name:
@@ -280,15 +294,8 @@ def get_google_calendar():
 
 
 def get_google_information():
-    (calendar_name, subject_key) = start_up()
-    phone_number = get_num()
-    #print(phone_number)
-    """Shows basic usage of the Gmail API.
-
-    Creates a Gmail API service object and outputs a list of label names
-    of the user's Gmail account.
-    """
-    
+    subject_key = "Official"
+	phone_number = get_num()
     user_message = ""
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
@@ -298,7 +305,6 @@ def get_google_information():
     
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
-            #print(g['name'], g["value"])
             if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
                     google_email = g["value"]
             elif g["name"] == "from" or g["name"] == "From" :   
@@ -306,7 +312,6 @@ def get_google_information():
             elif g["name"] == "Subject":
                     subject = g["value"]
         try:
-            #print(google_email.split("<")[1].split(">")[0].lower(), senders_email.split("<")[1].split(">")[0].lower())
             if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
                 if (str(subject).lower() != "reset"):
                         user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
@@ -350,13 +355,6 @@ def get_google_information():
         except IndexError as e:
             pass
     
-        if os.path.exists(".gmail.txt"):
-            pass
-        else:
-            with open(".gmail.txt", 'w+') as file:
-                file.write(google_email) 
-        #with open(".gmail.txt", 'r') as file:
-        #    google_email = file.read()
         name = get_name()#google_email.split("<")[0] 
         if user_message:
             #print(user_message)
