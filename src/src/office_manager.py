@@ -36,17 +36,20 @@ except ImportError:
 ####### Things that should be configured by the users ########################
 
 
-
-    
-
+touch_screen = False
+dir_path = os.path.dirname(os.path.realpath(__file__))  
+home = dir_path.split("office_manager")[0] + "office_manager/"
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/gmail-python-quickstart.json
 # Can add more API's in the future when it gets there
 #'https://mail.google.com/' + 
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com' + ' https://www.googleapis.com/auth/plus.me' 
-CLIENT_SECRET_FILE = 'client.json'
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly' + ' https://mail.google.com' + ' https://www.googleapis.com/auth/plus.me'
+CLIENT_SECRET_FILE = home + 'credentials/client.json'
 APPLICATION_NAME = 'Office Manager'
+
+
+
 
 ########### Enables the use of google API's as Spencer for questions #############
 
@@ -58,43 +61,12 @@ def start_up():
     else:
         with open("message_log.txt", 'w+'):
             os.utime("message_log.txt", None)
-
-    return (calendar_name, subject_key)
-          
-
-def check_for_alert():
-	get_credentials()
-	for i in messages['messages']:
-        for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
-            if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
-                    google_email = g["value"]
-            elif g["name"] == "from" or g["name"] == "From" :   
-                    senders_email = g["value"]
-            elif g["name"] == "Subject":
-                    subject = g["value"]
-        try:
-            if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
-                if (str(subject).lower() != "reset"):
-                        user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
-                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                        now = datetime.now()
+    if os.path.exists(".phone_number.txt"):
+        pass
+    else:
+        raise SystemError("Phone Number is not set up")
         
-                        with open("message_log.txt" , "a") as file:
-                            file.write(user_message + " ^% " + str(now) + "\n")
-
-                else:
-                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                        now = datetime.now()
-            
-                        with open("message_log.txt" , "a") as file:
-                            file.write("reset" + " ^% " + str(now) + "\n")
-                            user_message = ""
-            elif phone_number and phone_number in senders_email:
-                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
-                    user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
-                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                    now = datetime.now()
-     	 
+         
 
 def check_past_message(message):
     time = message.split(" ^% ")[1].replace("\n","")
@@ -107,10 +79,8 @@ def check_past_message(message):
         parse_time = cal.parseDT(mss, time)
         if (parse_time[1] == 0 or datetime.now() < parse_time[0]):
             user_message = mss
-    #    user_message = mss
         else:
             user_message = ""
-    print("Output" + user_message) 
     return user_message
                 
 """
@@ -159,16 +129,6 @@ def refresh(device_code):
 
 
 def get_credentials():
-    """Gets valid user credentials from storage.
-
-    If nothing has been stored, or if the stored credentials are invalid,
-    the OAuth2 flow is completed to obtain the new credentials.
-
-    Returns:
-        Credentials, the obtained credential.
-  
-    """
-
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -183,10 +143,6 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-            #print(credentials)        
-    
-        #else: # Needed only for compatibility with Python 2.6
-        #    credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
     """
@@ -214,8 +170,7 @@ def get_credentials():
     print(conn.json()['user_code']) 
     return (conn.json()['user_code'], conn.json()['device_code'])
     """
-
-###### Get google email ###############
+###### Get name ###############
 
 def get_name():
     credentials = get_credentials()
@@ -224,19 +179,31 @@ def get_name():
     user = service2.people().get(userId = 'me').execute()
     return str(user["displayName"])
 
+###### Get google email ###############
+
+def get_email():
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service2 = discovery.build('gmail', 'v1', http=http)
+    user = service2.users().getProfile(userId = 'me').execute()
+    return str(user["emailAddress"])
 
 
 ###### Google hangouts information ####################
 
 def need_to_set_calendar():
-    pass
+    raise ValueError("Calendar is not set up")
+
+
+def phone_number_not_set_up():
+    raise SystemError("Phone Number is not set up")
 
 
 
 ###### Switching the calendar info to its own function ######
 
 def get_google_calendar():
-	calendar_name = "Official"
+    calendar_name = "Official"
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service2 = discovery.build('calendar', 'v3', http=http)
@@ -248,8 +215,8 @@ def get_google_calendar():
             calendar_exists = True
             break
         else:
-            need_to_set_calendar()
             calendar_exists = False
+        
     if calendar_exists:
         now = datetime.now()
         dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 5 - now.weekday())]
@@ -283,6 +250,8 @@ def get_google_calendar():
             else:
                 text_to_print.append(["No Events"])
     else:
+        raise ValueError("Calendar is not set up")
+        #need_to_set_calendar()
         text_to_print = ""
         name = ""       
     return (text_to_print , name, calendar_exists)
@@ -295,7 +264,11 @@ def get_google_calendar():
 
 def get_google_information():
     subject_key = "Official"
-	phone_number = get_num()
+    try:
+        phone_number = get_num()
+    except ValueError:
+        raise
+    google_email = get_email()
     user_message = ""
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
@@ -305,9 +278,7 @@ def get_google_information():
     
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
-            if g['name'] == "to" or g['name'] == "Delivered-To" or g['name'] == "To" :
-                    google_email = g["value"]
-            elif g["name"] == "from" or g["name"] == "From" :   
+            if g["name"] == "from" or g["name"] == "From" :   
                     senders_email = g["value"]
             elif g["name"] == "Subject":
                     subject = g["value"]
@@ -355,9 +326,8 @@ def get_google_information():
         except IndexError as e:
             pass
     
-        name = get_name()#google_email.split("<")[0] 
+        name = get_name() 
         if user_message:
-            #print(user_message)
             return(True, user_message, name)
         else:
             return(False, "", name)
@@ -382,10 +352,13 @@ def get_phone_number():
                     return "Nothing yet"
 
 def get_num():
-   if os.path.exists(".phone_number.txt"):
+    if os.path.exists(".phone_number.txt"):
         with open(".phone_number.txt", "r") as file:
             num_sig = file.readline()
         return num_sig
+    else:
+        raise SystemError("Phone Number is not set up")
+        
  
 def store_phone_number(signature):
     with open(".phone_number.txt", "w+") as file:
@@ -393,8 +366,7 @@ def store_phone_number(signature):
 
     
 def qr_code():
-    with open(".gmail.txt", 'r') as file:
-        email = email = file.readline()
+    email = get_email()
     qr = qrcode.QRCode(
     version=2,
     error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -403,7 +375,7 @@ def qr_code():
     qr.add_data("mailto:{0}".format(email))
     qr.make(fit=True)
     img = qr.make_image()
-    img.save("qr_code.png")
+    img.save(home + "images/qr_codes/qr_code.png")
     return img
 
 
@@ -412,12 +384,11 @@ def send_message():
     qr_code() 
 
 
-         
-
 def main():
     hj = get_google_information()
 
 
 
 if __name__ == '__main__':
-    main()
+    pass
+    #main()

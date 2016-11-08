@@ -7,3 +7,7 @@ message_log.txt
 *.swo
 .gmail.txt
 *~
+__pycache__
+*.spec
+build
+dist
