@@ -191,7 +191,8 @@ class change_text(Widget):
 class office_manager(App):
     icon = "src/images/icon2.png"
     title = "Office Manager"
-    Window.size = (800,480)
+    #Window.size = (800,480)
+    Window.fullscreen =1
     try:
         if int(sys.argv[1]) == 1:
             Window.fullscreen =1
