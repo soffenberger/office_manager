@@ -5,9 +5,8 @@ message_log.txt
 *.swm
 *.swn
 *.swo
+*.swp
 .gmail.txt
 *~
 __pycache__
 *.spec
-build
-dist

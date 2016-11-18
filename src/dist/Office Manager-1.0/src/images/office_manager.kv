@@ -1,0 +1,591 @@
+#:kivy 1.8
+#: import ScreenManager kivy.uix.screenmanager.ScreenManager
+#: import Screen kivy.uix.screenmanager.ScreenManager
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+#: import Clock kivy.clock.Clock
+#: import Image kivy.uix.image.Image
+#: import color kivy.uix.image.Image
+#: import sleep time.sleep
+#: import BorderImage kivy.graphics.BorderImage
+
+   
+
+ScreenManager:
+    id: screen_manager
+    Dashboard:
+        id: Dashboard
+        name: 'Dashboard'
+        manager: 'screen_manager' 
+    MenuScreen:
+        id: menu_screen
+        name: 'Menu'
+        manager: 'screen_manager'
+    About_Us: 
+        id: About_Us
+        name: 'About_Us'
+        manager: 'screen_manager' 
+    Alert:
+        id: Alert
+        name: 'Alert'
+        manager: 'screen_manager'
+    Set_Up_Calendar:
+        id: Set_Up_Calendar
+        name: 'Set_Up_Calendar'
+        manager: 'screen_manager'
+    Set_Up_Phone:
+        id: Set_Up_Phone
+        name: 'Set_Up_Phone'
+        manager: 'screen_manager' 
+
+
+<Set_Up_Phone>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "src/images/Background_2.png" 
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: .3
+            Label:
+                text: 'To Set Up Phone'
+                font_size: 35
+                 
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                halign: 'left'
+                valign: 'top'
+                text: '1) Send text message to your email\n'
+                text_size: self.size
+                font_size: 40
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size
+
+
+
+
+
+
+
+<Set_Up_Calendar>:
+    id: Set_Up_Calendar
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "src/images/Background_2.png" 
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: .3
+            Label:
+                text: 'To Set Up Calendar'
+                font_size: 35
+                 
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                halign: 'left'
+                valign: 'top'
+                text: '1) Go to google account\n\n2) Create calendar named "Official"\n\n3) Use this to set events to display(Maximum three)'
+                text_size: self.size
+                font_size: 40
+                canvas:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size
+
+
+<Full_Image>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "src/images/Background_2.png" 
+        BoxLayout:
+            orientation: 'horizontal'   
+            canvas:
+                Color:
+                    rgb: (1, 1, 1)
+                Rectangle: 
+                    size: self.width + 20, self.height + 20
+                    pos: self.x - 10, self.y - 10
+            Image:
+                source: "src/images/qr_code.png"
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            Button:
+                size_hint_x: .25
+                text: 'Return'
+                group: 'send_message'
+                font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'src/images/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size 
+                on_press:
+                    app.root.current = "Dashboard"
+            Label:
+                size_hint_x: .5
+                text: 'Scan to Send Email'
+                group: 'name'
+                font_size: 25
+            Button:
+                text: 'IDK' 
+                size_hint_x: .25
+                group: 'sign_out'
+                font_size: 20
+                background_color: (0,0,0,0)
+                canvas:
+                    Rectangle:
+                        source: 'src/images/modern_message_block.png'
+                        pos: self.pos
+                        size: self.size
+
+
+<Dashboard>:
+    id: Dashboard
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "src/images/Background_2.png" 
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                orientation: 'horizontal'
+                BoxLayout:
+                    id: mon0
+                    padding: (0,0,0,10)
+                    size_hint: (.2,None)
+                    size: (90,100)
+                    orientation:'horizontal'
+                    Image:
+                        source: "src/images/modern_monday.png"
+                        id: mon
+                        group: 'Mon'
+                BoxLayout:
+                    id: mon_lay
+                    size_hint_x: .8 
+                    padding: (0,10,10,10)
+                    Label:
+                        id: mon1
+                        text: "Loading"
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size 
+                                source: "src/images/modern_message_block.png"
+                    Label:
+                        id: mon2
+                        text: ""
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: mon3
+                        text: ""
+                        group: 'Mon'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+            BoxLayout:
+                id: tues0
+                orientation: 'horizontal'
+                BoxLayout:
+                    padding: (0,0,0,10)
+                    size_hint: (.2,None)
+                    size: (90,100)
+                    Image:
+                        source: "src/images/modern_tuesday.png"
+                        id: tues
+                        group: 'tues'
+                BoxLayout:
+                    padding: (0,10,10,10)
+                    id: tues_lay 
+                    size_hint_x: .8
+                    Label:
+                        id: tues1
+                        text: "Loading"
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before: 
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                                source: 'src/images/modern_message_block.png'
+                                #Color:
+                                 #   rgb: (1,1,1,1)
+                    Label:
+                        tues2: tues2
+                        id: tues2
+                        text: ""
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: tues3
+                        text: ""
+                        group: 'tues'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+            BoxLayout:
+                id: wed0
+                orientation:'horizontal'
+                BoxLayout:
+                    padding: (0,0,0,10)
+                    size_hint: (.2,None)
+                    size: (90,100)
+                    Image:
+                        source: "src/images/modern_wednesday.png"
+                        id: wed
+                        group: 'wed'
+                BoxLayout:
+                    padding: (0,10,10,10)
+                    id: wed_lay
+                    size_hint_x: .8
+                    Label:
+                        id: wed1
+                        text: "Loading"
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: wed2
+                        text: ""
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: wed3
+                        text: ""
+                        group: 'wed'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size
+            BoxLayout:
+                orientation:'horizontal'
+                id: thurs0
+                BoxLayout:
+                    padding: (0,0,0,10)
+                    size_hint: (.2,None)
+                    size: (90,100)
+                    Image:
+                        source: "src/images/modern_thursday.png"
+                        id: thurs
+                        group: 'thurs'
+                BoxLayout:
+                    padding: (0,10,10,10)
+                    id: thurs_lay     
+                    size_hint_x: .8
+                    Label:
+                        id: thurs1
+                        text: "Loading"
+                        group: 'thurs'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size
+                    Label:
+                        id: thurs2
+                        text: ""
+                        group: 'thurs2'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: thurs3
+                        text: ""
+                        group: 'thurs3'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+            BoxLayout:
+                id: fri0
+                orientation: 'horizontal'
+                BoxLayout:
+                    padding: (0,0,0,10)
+                    size_hint: (.2,None)
+                    size: (900,100)
+                    Image:
+                        source: "src/images/modern_friday.png"
+                        id: fri
+                        group: 'fri'
+                BoxLayout:
+                    padding: (0,10,10,10)
+                    size_hint_x: .8
+                    id: fri_lay    
+                    Label:
+                        id: fri1
+                        text: "Loading"
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: fri2
+                        text: ""
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size 
+                    Label:
+                        id: fri3
+                        text: ""
+                        group: 'fri'
+                        font_size: 30
+                        color: get_color_from_hex("#FFFFFF")
+                        canvas.before:
+                            BorderImage:
+                                source: 'src/images/modern_message_block.png'
+                                pos: self.pos
+                                size: self.size
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            BoxLayout:
+                size_hint_x:.3
+                Label:
+                    id: menu
+                    text: root.uname
+                    canvas.before:
+                        Rectangle:
+                            pos:self.pos
+                            size: self.size
+                            source: "src/images/modern_message_block.png" 
+            BoxLayout:
+                size_hint_x:.4
+                Label:
+                    id: menu
+                    text: "Office Manager"
+                    font_size: 26 
+            BoxLayout:
+                size_hint_x:.3
+                Label:
+                    id: menu
+                    text: root.gmail
+                    canvas.before:
+                        Rectangle:
+                            pos:self.pos
+                            size: self.size
+                            source: "src/images/modern_message_block.png"  
+<Alert>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "src/images/Background_2.png" 
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                id: almsg
+                text: root.msg
+                group: 'week_days'
+                font_size: 60
+                outline_width: 6
+                outline_color: get_color_from_hex("#FFFFFF")
+                color: get_color_from_hex("#FFFFFF")
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            BoxLayout:
+                size_hint_x:.3
+                Label:
+                    id: menu
+                    text: root.uname
+                    canvas.before:
+                        Rectangle:
+                            pos:self.pos
+                            size: self.size
+                            source: "src/images/modern_message_block.png" 
+            BoxLayout:
+                size_hint_x:.4
+                Label:
+                    id: menu
+                    text: "Office Manager"
+                    font_size: 26 
+            BoxLayout:
+                size_hint_x:.3
+                Label:
+                    id: menu
+                    text: root.gmail
+                    canvas.before:
+                        Rectangle:
+                            pos:self.pos
+                            size: self.size
+                            source: "src/images/modern_message_block.png"
+
+<About_Us>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "src/images/Background_2.png"
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .4
+            Label:
+                text: 'Frank Tsang'
+                font_size: 15
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+            Label:
+                text: 'Spencer Offenberger'
+                font_size: 15
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size
+            Label:
+                text: 'Emannuel Gonzales'
+                font_size: 15
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+            Label:
+                text: 'Luis Moreno'
+                font_size: 15
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .5
+            Label:
+                text: 'Email: soffenbe@asu.edu'
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+            Label:
+                text: 'github: https://github.com/soffenberger/office_manager.git'
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            Button:
+                size_hint_x: .25
+                text: 'Idk'
+                background_color: (0,0,0,0)
+                group: 'send_message'
+                font_size: 20
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+            Label:
+                size_hint_x: .5
+                text: 'Office Manager'
+                group: 'name'
+                font_size: 20
+            Button:
+                size_hint_x: .25
+                text: 'Menu'
+                group: 'sign_out'
+                background_color: (0,0,0,0)
+                font_size: 20
+                canvas.before:
+                    BorderImage:
+                        source: 'src/images/modern_message_block2.png'
+                        pos: self.pos
+                        size: self.size 
+                on_press:
+                    app.root.current = "Menu" 
+
+    
+
+
