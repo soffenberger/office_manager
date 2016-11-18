@@ -56,12 +56,12 @@ APPLICATION_NAME = 'Office Manager'
 
 
 def start_up(): 
-    if os.path.exists("message_log.txt"):
+    if os.path.exists("src/images/message_log.txt"):
         pass
     else:
-        with open("message_log.txt", 'w+'):
-            os.utime("message_log.txt", None)
-    if os.path.exists(".phone_number.txt"):
+        with open("src/images/message_log.txt", 'w+'):
+            os.utime("src/images/message_log.txt", None)
+    if os.path.exists("src/images/.phone_number.txt"):
         pass
     else:
         raise SystemError("Phone Number is not set up")
@@ -208,7 +208,6 @@ def get_google_calendar():
     http = credentials.authorize(httplib2.Http())
     service2 = discovery.build('calendar', 'v3', http=http)
     calendars = service2.calendarList().list().execute()
-    name = get_name()
     for g in calendars['items']:
         if g['summary'] == calendar_name:
             calendar_id = g['id']
@@ -254,7 +253,7 @@ def get_google_calendar():
         #need_to_set_calendar()
         text_to_print = ""
         name = ""       
-    return (text_to_print , name, calendar_exists)
+    return (text_to_print, calendar_exists)
 
    
 ####### Function that connects gmail and looks for messages #######3
@@ -263,10 +262,11 @@ def get_google_calendar():
 
 
 def get_google_information():
-    subject_key = "Official"
+    start_up()
+    subject_key = "Note"
     try:
         phone_number = get_num()
-    except ValueError:
+    except SystemError:
         raise
     google_email = get_email()
     user_message = ""
@@ -279,58 +279,55 @@ def get_google_information():
     for i in messages['messages']:
         for g in service.users().messages().get(userId = 'me', id = i['id']).execute()['payload']['headers']:
             if g["name"] == "from" or g["name"] == "From" :   
-                    senders_email = g["value"]
+                    senders_email = g["value"].split("<")[1].split(">")[0]
             elif g["name"] == "Subject":
                     subject = g["value"]
-        try:
-            if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
-                if (str(subject).lower() != "reset"):
-                        user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
-                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                        now = datetime.now()
-        
-                        with open("message_log.txt" , "a") as file:
-                            file.write(user_message + " ^% " + str(now) + "\n")
-
-                else:
-                        service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                        now = datetime.now()
-            
-                        with open("message_log.txt" , "a") as file:
-                            file.write("reset" + " ^% " + str(now) + "\n")
-                            user_message = ""
-            elif phone_number and phone_number in senders_email:
-                 if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
+        if google_email.lower() in senders_email.lower() and (str(subject_key).lower() in str(subject).lower() or "reset" in subject.lower()):
+            if (str(subject).lower() != "reset"):
                     user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
                     service.users().messages().delete(userId = 'me', id = i['id']).execute()
                     now = datetime.now()
-                
-                    with open("message_log.txt" , "a") as file:
-                        file.write(user_message + " ^% " + str(now) + "\n")
-
-                 else:
-                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
-                    
-                    now = datetime.now()
-                    
-                    with open("message_log.txt" , "a") as file:
-                        file.write("reset" + " ^% " + str(now) + "\n")
-                    user_message = ""
+        
+                    with open("src/images/message_log.txt" , "a") as file:
+                       file.write(user_message + " ^% " + str(now) + "\n")
 
             else:
-                with open("message_log.txt" , "r") as file:
+                    service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                    now = datetime.now()
+           
+                    with open("src/images/message_log.txt" , "a") as file:
+                        file.write("reset" + " ^% " + str(now) + "\n")
+                        user_message = ""
+        elif phone_number and phone_number in senders_email:
+             if (service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet'].lower() != "reset"):
+                user_message = service.users().messages().get(userId = 'me', id = i['id']).execute()['snippet']
+                service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                now = datetime.now()
+             
+                with open("src/images/message_log.txt" , "a") as file:
+                   file.write(user_message + " ^% " + str(now) + "\n")
+             else:
+                service.users().messages().delete(userId = 'me', id = i['id']).execute()
+                 
+                now = datetime.now()
+                  
+                with open("src/images/message_log.txt" , "a") as file:
+                    file.write("reset" + " ^% " + str(now) + "\n")
+                user_message = ""
+
+        else:
+            with open("src/images/message_log.txt" , "r") as file:
+                try:
                     prev_mess = file.readlines()[-1]#.decode()
                     user_message= check_past_message(prev_mess)
-                 
+                except IndexError:
+                    user_message = ""
+               
     
-        except IndexError as e:
-            pass
-    
-        name = get_name() 
         if user_message:
-            return(True, user_message, name)
+            return(True, user_message)
         else:
-            return(False, "", name)
+            return(False, "")
             
 
 def get_phone_number():
@@ -352,8 +349,8 @@ def get_phone_number():
                     return "Nothing yet"
 
 def get_num():
-    if os.path.exists(".phone_number.txt"):
-        with open(".phone_number.txt", "r") as file:
+    if os.path.exists("src/images/.phone_number.txt"):
+        with open("src/images/.phone_number.txt", "r") as file:
             num_sig = file.readline()
         return num_sig
     else:
@@ -361,7 +358,7 @@ def get_num():
         
  
 def store_phone_number(signature):
-    with open(".phone_number.txt", "w+") as file:
+    with open("src/images/.phone_number.txt", "w+") as file:
         file.write(signature)
 
     
@@ -375,7 +372,7 @@ def qr_code():
     qr.add_data("mailto:{0}".format(email))
     qr.make(fit=True)
     img = qr.make_image()
-    img.save(home + "images/qr_codes/qr_code.png")
+    img.save("src/images/qr_code.png")
     return img
 
 
@@ -385,9 +382,7 @@ def send_message():
 
 
 def main():
-    hj = get_google_information()
-
-
+    hj = get_google_informat
 
 if __name__ == '__main__':
     pass

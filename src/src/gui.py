@@ -1,7 +1,8 @@
-from office_manager import get_google_information, start_up, send_message, qr_code, get_google_calendar, store_phone_number, get_phone_number
+from src.office_manager import get_google_information, start_up, send_message, qr_code, get_google_calendar, store_phone_number, get_phone_number, get_name, get_email
 from time import sleep
 import kivy
 kivy.require('1.8.0')
+import os
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -49,7 +50,24 @@ class About_Us(Screen):
     pass
 
 class Set_Up_Phone(Screen):
-    pass
+    def __init__(self, *args, **kwargs):
+        self.trigger2 = Clock.create_trigger(self.update, .3) 
+        super(Set_Up_Phone, self).__init__(*args, **kwargs)
+
+    def on_enter(self):
+        self.trigger2() 
+     
+    def update(self, *args):
+        number = get_phone_number()
+        print(number)
+        if number == "Nothing yet":
+            self.trigger2()
+        else:
+            store_phone_number(number)
+            self.change()
+
+    def change(self, *args):
+        self.parent.current = "Dashboard"
 
 class Set_Up_Calendar(Screen): 
     def __init__(self, *args, **kwargs):
@@ -76,11 +94,13 @@ class Full_Image(Screen):
  
 class Dashboard(Screen): 
     def __init__(self, **kwargs):
+        self.uname = get_name()
+        self.gmail = get_email()
         self.days=["mon","tues","wed","thurs","fri"]
         try:
-            (self.text, self.uname, self.issetup) = get_google_calendar()
+            (self.text, self.issetup) = get_google_calendar()
         except ValueError:
-            (self.text, self.uname, self.issetup) = ("","","") 
+            (self.text, self.issetup) = ("","") 
         try:
             self.alert = get_google_information()[0]
         except SystemError:
@@ -98,7 +118,7 @@ class Dashboard(Screen):
             if self.alert:
                 self.parent.current =  "Alert"
             else:
-                (self.text, self.uname, self.issetup) = get_google_calendar()
+                (self.text, self.issetup) = get_google_calendar()
                 self.trigger()
                 for i in range(5):
                     self.ids['{0}'.format(self.days[i])].width = 5
@@ -125,16 +145,18 @@ class Dashboard(Screen):
          
 class Alert(Screen):
     def __init__(self, *args, **kwargs):
+        self.uname = get_name()
+        self.gmail = get_email()
         try:
-            (self.is_alert, self.msg, self.uname) = get_google_information()
+            (self.is_alert, self.msg) = get_google_information()
         except SystemError:
-            (self.is_alert, self.msg, self.uname) = ("","","") 
+            (self.is_alert, self.msg) = ("","") 
         self.trigger = Clock.create_trigger(self.update_value, 30)
         super(Alert, self).__init__(*args, **kwargs)
          
     def on_enter(self):
         try:
-            (self.is_alert, self.msg, self.uname) = get_google_information()
+            (self.is_alert, self.msg) = get_google_information()
             self.ids['almsg'].text = self.msg
             self.trigger()
         except SystemError:
@@ -142,9 +164,8 @@ class Alert(Screen):
  
     def update_value(self, *args):
         try:
-            (self.is_alert, self.msg, self.uname) = get_google_information()
+            (self.is_alert, self.msg) = get_google_information()
             self.ids['almsg'].text = self.msg
-            self.trigger()
             if not self.is_alert:
                 self.parent.current = "Dashboard"
             else:
@@ -155,7 +176,7 @@ class Alert(Screen):
 
 
 
-buildKV = Builder.load_file("office_manager.kv")
+buildKV = Builder.load_file("src/images/office_manager.kv")
 
 """
 class change_text(Widget):
@@ -168,7 +189,7 @@ class change_text(Widget):
 """
 
 class office_manager(App):
-    icon = "images/misc/icon2.png"
+    icon = "src/images/icon2.png"
     title = "Office Manager"
     Window.size = (800,480)
     try:
@@ -181,11 +202,29 @@ class office_manager(App):
         return buildKV
 
 
-
-    
-
-    
-
-if __name__ == '__main__':
+def determine_path ():
+    """Borrowed from wxglade.py"""
+    try:
+        root = __file__
+        if os.path.islink (root):
+            root = os.path.realpath (root)
+        return os.path.dirname (os.path.abspath (root))
+    except:
+        print "I'm sorry, but something is wrong."
+        print "There is no __file__ variable. Please contact the author."
+        sys.exit ()
+        
+def start ():
+    print "module is running"
+    print determine_path ()
+    print "My various data files and so on are:"
+    files = [f for f in os.listdir(determine_path () + "/images")]
+    print files
     office_manager().run() 
+    
+
+    
+
+#if __name__ == '__main__':
+#    office_manager().run() 
 
